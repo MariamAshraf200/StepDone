@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+// Notification repository calls removed: keep task notification state but do not interact with local notifications.
 import 'state.dart' as taskState;
 import '../../../../../injection_imports.dart';
 
@@ -150,6 +151,10 @@ class TaskBloc extends Bloc<TaskEvent, taskState.TaskState> {
       UpdateTaskEvent event,
       Emitter<taskState.TaskState> emit,
       ) async {
+    // If update turns notifications off, we intentionally do NOT cancel any local
+    // scheduled notifications here because local notifications have been disabled.
+    // The task's `hasNotification` flag is still stored on the task entity.
+
     await updateTaskUseCase(event.task);
     await updateTaskStatusUseCase(
       event.task.id,
@@ -173,6 +178,7 @@ class TaskBloc extends Bloc<TaskEvent, taskState.TaskState> {
       DeleteTaskEvent event,
       Emitter<taskState.TaskState> emit,
       ) async {
+    // Local notifications are disabled; do not attempt to cancel any scheduled notifications here.
     await deleteTaskUseCase(event.taskId);
     _refreshWithFilters();
   }

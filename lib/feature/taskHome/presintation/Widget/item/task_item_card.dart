@@ -143,23 +143,31 @@ class TaskItemCard extends StatelessWidget {
 
                 const SizedBox(height: 6),
 
-                // Date & Time
-                Row(
+                // Date & Time - use Wrap so the pieces can wrap to next line on narrow screens
+                Wrap(
+                  spacing: 14,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     if (task.date.isNotEmpty)
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           const Icon(Icons.calendar_today, size: 14, color: Colors.grey),
                           const SizedBox(width: 4),
-                          Text(
-                            DateFormatUtil.formatFullDate(task.date, locale: Localizations.localeOf(context).toString()),
-                            style: const TextStyle(fontSize: 13, color: Colors.grey),
+                          // Constrain the date text so it can ellipsize instead of forcing overflow
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
+                            child: Text(
+                              DateFormatUtil.formatFullDate(task.date, locale: Localizations.localeOf(context).toString()),
+                              style: const TextStyle(fontSize: 13, color: Colors.grey),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),
-                    if (task.time.isNotEmpty) ...[
-                      const SizedBox(width: 14),
+                    if (task.time.isNotEmpty)
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           const Icon(Icons.access_time, size: 14, color: Colors.grey),
                           const SizedBox(width: 4),
@@ -169,19 +177,21 @@ class TaskItemCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ],
-                    if (task.endTime.isNotEmpty) ...[
-                      const SizedBox(width: 8),
-                      Text(
-                        '-',
-                        style: const TextStyle(fontSize: 13, color: Colors.grey),
+                    if (task.endTime.isNotEmpty)
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            '-',
+                            style: TextStyle(fontSize: 13, color: Colors.grey),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            task.endTime,
+                            style: const TextStyle(fontSize: 13, color: Colors.grey),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 4),
-                      Text(
-                        task.endTime,
-                        style: const TextStyle(fontSize: 13, color: Colors.grey),
-                      ),
-                    ],
                   ],
                 ),
               ],

@@ -13,3 +13,35 @@ import 'app_localizations_en.dart';
 extension L10nBuildContext on BuildContext {
   AppLocalizations get l10n => AppLocalizations.of(this) ?? AppLocalizationsEn();
 }
+
+/// Small safe helpers that expose a few additional localized strings
+/// while remaining robust if the generated `AppLocalizations` class
+/// doesn't yet contain them (uses `dynamic` access with fallbacks).
+extension L10nFallbackHelpers on BuildContext {
+  String get notificationSent {
+    final dynamic loc = l10n;
+    try {
+      return loc.notificationSent as String;
+    } catch (_) {
+      return 'Notification sent';
+    }
+  }
+
+  String get notificationFailed {
+    final dynamic loc = l10n;
+    try {
+      return loc.notificationFailed as String;
+    } catch (_) {
+      return 'Failed to send notification';
+    }
+  }
+
+  String get sendNotification {
+    final dynamic loc = l10n;
+    try {
+      return loc.sendNotification as String;
+    } catch (_) {
+      return 'Send notification';
+    }
+  }
+}

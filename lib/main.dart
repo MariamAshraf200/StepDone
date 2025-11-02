@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'core/services/task_notification_initializer.dart';
 import 'injection_imports.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // ✅ Initialize dependencies
+  await init();
+
+  // ✅ Setup system UI
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.immersiveSticky,
     overlays: SystemUiOverlay.values,
   );
 
-  await init();
+  // ✅ Run app
   runApp(
     MultiBlocProvider(
       providers: [
@@ -22,4 +27,7 @@ Future<void> main() async {
       child: const AppBootstrapper(),
     ),
   );
+
+  // Start notification initializer after the app is running (non-blocking).
+  Future.microtask(() => TaskNotificationInitializer.run());
 }

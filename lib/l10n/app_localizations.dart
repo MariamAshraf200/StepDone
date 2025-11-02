@@ -630,7 +630,31 @@ abstract class AppLocalizations {
   /// **'Continue with Google'**
   String get continueWithGoogle;
 
-  /// Generic error headline
+  /// Label for enabling task reminders/notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Enable notifications'**
+  String get enableNotifications;
+
+  /// Message shown when a notification was sent successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Notification sent'**
+  String get notificationSent;
+
+  /// Message shown when sending a notification failed
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send notification'**
+  String get notificationFailed;
+
+  /// Tooltip or label for sending a notification
+  ///
+  /// In en, this message translates to:
+  /// **'Send notification'**
+  String get sendNotification;
+
+  /// Label for something went wrong
   ///
   /// In en, this message translates to:
   /// **'Something went wrong'**

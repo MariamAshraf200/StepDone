@@ -127,9 +127,11 @@
 
   "toggleTheme": "تبديل المظهر",
   "@toggleTheme": { "description": "Label for toggling the app theme" },
-
   "logout": "تسجيل الخروج",
   "@logout": { "description": "Label for logging out / signing out" },
+
+  "enableNotifications": "تفعيل الإشعارات",
+  "@enableNotifications": { "description": "Label for enabling task reminders/notifications" },
 
   "somethingWentWrong": "حدث خطأ ما",
   "@somethingWentWrong": { "description": "Generic error headline" },

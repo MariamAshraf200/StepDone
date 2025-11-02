@@ -258,6 +258,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get continueWithGoogle => 'Continue with Google';
 
   @override
+  String get enableNotifications => 'Enable notifications';
+
+  @override
+  String get notificationSent => 'Notification sent';
+
+  @override
+  String get notificationFailed => 'Failed to send notification';
+
+  @override
+  String get sendNotification => 'Send notification';
+
+  @override
   String get somethingWentWrong => 'Something went wrong';
 
   @override

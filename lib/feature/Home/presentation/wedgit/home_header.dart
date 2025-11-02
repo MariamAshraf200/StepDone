@@ -7,6 +7,7 @@ import '../../../../core/theme/palettes.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../auth/presentation/bloc/auth_event.dart';
 import '../../../../l10n/l10n_extension.dart';
+import '../../../notification/presentation/screen/notification_settings_screen.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
@@ -89,6 +90,17 @@ class HomeHeader extends StatelessWidget {
             // 🎛️ Modern rounded icons
             Row(
               children: [
+                IconButton(
+                  tooltip: 'Notifications',
+                  icon: Icon(Icons.notifications_none, color: colorScheme.onPrimary, size: 22),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (ctx) => const NotificationSettingsScreen(),
+                      ),
+                    );
+                  },
+                ),
                 _buildPopupMenu(context, colorScheme),
               ],
             ),

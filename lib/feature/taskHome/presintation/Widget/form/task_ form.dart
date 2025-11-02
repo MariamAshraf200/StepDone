@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/util/date_and_time/time_range_field.dart';
 import '../../../../../injection_imports.dart';
 import '../../../../../l10n/l10n_extension.dart';
+import '../../../../notification/domain/entities/notification_entity.dart';
+import '../../../../notification/domain/usecases/cancel_notification_usecase.dart';
+import '../../../../notification/domain/usecases/schedule_notification_usecase.dart';
+import '../../../../notification/domain/usecases/request_permission_usecase.dart';
 
 enum TaskFormMode { add, update }
 
@@ -22,8 +26,7 @@ class TaskForm extends StatefulWidget {
   State<TaskForm> createState() => _TaskFormState();
 }
 
-class _TaskFormState extends State<TaskForm>
-    with AutomaticKeepAliveClientMixin {
+class _TaskFormState extends State<TaskForm> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -36,6 +39,8 @@ class _TaskFormState extends State<TaskForm>
   TimeOfDay? _endTime;
   String? _selectedCategory;
   TaskPriority _selectedPriority = TaskPriority.medium;
+  bool _notificationEnabled = false;
+  bool _isDisposed = false;
 
   @override
   void initState() {
@@ -51,50 +56,21 @@ class _TaskFormState extends State<TaskForm>
   void _initializeFromTask(TaskDetails task) {
     _titleController = TextEditingController(text: task.title);
     _descriptionController = TextEditingController(text: task.description);
-
     try {
-      _date = DateFormatUtil.parseDate(task.date);
+    _date = DateFormatUtil.parseDate(task.date);
     } catch (_) {}
-
-    // Robust time parsing for update
-    _startTime = null;
-    _endTime = null;
-    if (task.time.isNotEmpty) {
-      try {
-        _startTime = TimeFormatUtil.parseTime(task.time);
-      } catch (_) {
-        // Try parsing as 24-hour format if 12-hour fails
-        try {
-          final parsed = TimeOfDay(
-            hour: int.parse(task.time.split(':')[0]),
-            minute: int.parse(task.time.split(':')[1].split(' ')[0]),
-          );
-          _startTime = parsed;
-        } catch (_) {}
-      }
-    }
-    if (task.endTime.isNotEmpty) {
-      try {
-        _endTime = TimeFormatUtil.parseTime(task.endTime);
-      } catch (_) {
-        try {
-          final parsed = TimeOfDay(
-            hour: int.parse(task.endTime.split(':')[0]),
-            minute: int.parse(task.endTime.split(':')[1].split(' ')[0]),
-          );
-          _endTime = parsed;
-        } catch (_) {}
-      }
-    }
-
+    _startTime = task.time.isNotEmpty ? TimeFormatUtil.parseFlexibleTime(task.time) : null;
+    _endTime = task.endTime.isNotEmpty ? TimeFormatUtil.parseFlexibleTime(task.endTime) : null;
     _selectedCategory = task.category;
     _selectedPriority = TaskPriorityExtension.fromString(task.priority);
+    _notificationEnabled = task.hasNotification;
   }
 
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
+    _isDisposed = true;
     super.dispose();
   }
 
@@ -118,6 +94,8 @@ class _TaskFormState extends State<TaskForm>
             const SizedBox(height: 16),
             _buildPrioritySelector(),
             const SizedBox(height: 16),
+            _buildNotificationToggle(),
+            const SizedBox(height: 16),
             _buildSubmitButton(),
           ],
         ),
@@ -126,6 +104,7 @@ class _TaskFormState extends State<TaskForm>
   }
 
   // ---------------- Widgets ----------------
+
   Widget _buildTitleField() => CustomTextField(
     isRequired: true,
     outSideTitle: context.l10n.taskTitle,
@@ -166,13 +145,12 @@ class _TaskFormState extends State<TaskForm>
     canBeNull: true,
   );
 
-
   Widget _buildCategorySelector() => BlocBuilder<CategoryBloc, CategoryState>(
     builder: (context, state) {
-      // Use the core logic widget which handles loading, add and delete through the Bloc
       return CategorySelectorWithLogic(
         selectedCategory: _selectedCategory,
-        onCategorySelected: (category) => setState(() => _selectedCategory = category),
+        onCategorySelected: (category) =>
+            setState(() => _selectedCategory = category),
       );
     },
   );
@@ -182,58 +160,108 @@ class _TaskFormState extends State<TaskForm>
     onPrioritySelected: (p) => setState(() => _selectedPriority = p),
   );
 
+  Widget _buildNotificationToggle() => SwitchListTile(
+    title: Text(context.l10n.enableNotifications),
+    value: _notificationEnabled,
+    onChanged: (value) => setState(() => _notificationEnabled = value),
+  );
 
   Widget _buildSubmitButton() => LoadingElevatedButton(
     onPressed: _handleSubmit,
-    buttonText:
-    widget.mode == TaskFormMode.add ? context.l10n.addTaskButton : context.l10n.updateTaskButton,
+    buttonText: widget.mode == TaskFormMode.add
+        ? context.l10n.addTaskButton
+        : context.l10n.updateTaskButton,
     icon: Icon(widget.mode == TaskFormMode.add ? Icons.add : Icons.update),
     showLoading: false,
   );
 
   // ---------------- Logic ----------------
+
   Future<void> _handleSubmit() async {
     if (!_formKey.currentState!.validate()) return;
-
-    // Use existing time if not changed in update mode
-    TimeOfDay? startTime = _startTime;
-    TimeOfDay? endTime = _endTime;
-    if (widget.mode == TaskFormMode.update && widget.task != null) {
-      if (startTime == null) {
-        try {
-          startTime = TimeFormatUtil.parseTime(widget.task!.time);
-        } catch (_) {}
-      }
-      if (endTime == null) {
-        try {
-          if (widget.task!.endTime.isNotEmpty) {
-            endTime = TimeFormatUtil.parseTime(widget.task!.endTime);
-          }
-        } catch (_) {}
-      }
-    }
 
     final task = TaskDetails.fromFormData(
       title: _titleController.text,
       description: _descriptionController.text,
       date: _date,
-      startTime: startTime,
-      endTime: endTime,
+      startTime: _startTime,
+      endTime: _endTime,
       priority: _selectedPriority,
       category: _selectedCategory,
       planId: widget.planId,
+      notification: _notificationEnabled,
       existingTask: widget.task,
-      context: context,
+      // avoid passing State.context into this method to prevent accidental use of
+      // the context after the State may have been disposed while awaiting async work
+      context: null,
     );
 
+    // 🧩 Dispatch Task Add/Update
     if (widget.mode == TaskFormMode.add) {
       context.read<TaskBloc>().add(AddTaskEvent(task, planId: widget.planId));
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.taskAdded)));
     } else {
       context.read<TaskBloc>().add(UpdateTaskEvent(task));
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.taskUpdated)));
     }
 
+    // 🧠 Notification Logic
+    await _handleNotification(task);
+
+    // Only use context if the State is still mounted and not disposed
+    if (!mounted || _isDisposed) return;
     Navigator.of(context).pop();
+  }
+
+  Future<void> _handleNotification(TaskDetails task) async {
+    try {
+      // Ensure permission
+      final permissionUseCase = sl<RequestPermissionUseCase>();
+      await permissionUseCase();
+      if (!mounted || _isDisposed) return;
+
+      final scheduleUseCase = sl<ScheduleNotificationUseCase>();
+      final cancelUseCase = sl<CancelNotificationUseCase>();
+
+      // Cancel old notification if needed
+      if (widget.mode == TaskFormMode.update &&
+          widget.task != null &&
+          widget.task!.hasNotification) {
+        await cancelUseCase(widget.task!.id.hashCode);
+        if (!mounted || _isDisposed) return;
+      }
+
+      // Schedule or cancel
+      if (task.hasNotification && task.notifyAt != null) {
+        final notification = AppNotification(
+          id: task.id.hashCode,
+          title: task.title.isNotEmpty ? task.title : 'Reminder',
+          body: task.description.isNotEmpty
+              ? task.description
+              : 'Task reminder',
+          scheduledTime: task.notifyAt!,
+        );
+        final exact = await scheduleUseCase(notification);
+        if (!mounted || _isDisposed) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(exact
+                  ? '⏰ Exact notification scheduled'
+                  : '⏰ Notification scheduled')),
+        );
+      } else if (widget.mode == TaskFormMode.update &&
+          widget.task != null &&
+          !task.hasNotification) {
+        await cancelUseCase(task.id.hashCode);
+        if (!mounted || _isDisposed) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('🔕 Notification cancelled')),
+        );
+      }
+    } catch (e) {
+      debugPrint('Notification error: $e');
+      if (!mounted || _isDisposed) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('⚠️ Failed to handle notifications')),
+      );
+    }
   }
 }

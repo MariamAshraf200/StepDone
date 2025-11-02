@@ -244,6 +244,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get continueWithGoogle => 'المتابعة باستخدام Google';
 
   @override
+  String get enableNotifications => 'تفعيل الإشعارات';
+
+  @override
+  String get notificationSent => 'تم إرسال الإشعار';
+
+  @override
+  String get notificationFailed => 'فشل في إرسال الإشعار';
+
+  @override
+  String get sendNotification => 'إرسال إشعار';
+
+  @override
   String get somethingWentWrong => 'حدث خطأ ما';
 
   @override

@@ -1,5 +1,11 @@
 import 'package:get_it/get_it.dart';
+import 'feature/notification/domain/usecases/cancel_notification_usecase.dart';
+import 'feature/notification/domain/usecases/request_permission_usecase.dart';
+import 'feature/notification/domain/usecases/schedule_notification_usecase.dart';
 import 'injection_imports.dart';
+import 'feature/notification/data/datasource/local_notification_service.dart';
+import 'feature/notification/data/repositories/notification_repository_impl.dart';
+import 'feature/notification/domain/repositories/notification_repository.dart';
 
 final sl = GetIt.instance;
 
@@ -31,6 +37,20 @@ Future<void> init() async {
     sl.registerLazySingleton<HivePlanLocalDataSource>(
       () => HivePlanLocalDataSource(sl<HiveService>()),
     );
+
+    // Register LocalNotificationService and NotificationRepository
+    sl.registerLazySingleton<LocalNotificationService>(() => LocalNotificationService());
+    sl.registerLazySingleton<NotificationRepository>(
+      () => NotificationRepositoryImpl(sl<LocalNotificationService>()),
+    );
+
+    // Initialize the notification service so timezone data and plugin are ready
+    await sl<LocalNotificationService>().init();
+
+    // Notification use cases
+    sl.registerLazySingleton(() => ScheduleNotificationUseCase(sl<NotificationRepository>()));
+    sl.registerLazySingleton(() => RequestPermissionUseCase(sl<NotificationRepository>()));
+    sl.registerLazySingleton(() => CancelNotificationUseCase(sl<NotificationRepository>()));
 
     ///////////////////////// Repositories /////////////////////////////
     ///////////////////////////////////////////////////////////////////

@@ -1,19 +1,33 @@
-repositories {
-    maven { url 'https://maven.aliyun.com/repository/google' }
-    maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
-    mavenCentral()
-    google()
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        // Flutter artifacts repo (required by some plugins)
+        maven { url 'https://storage.googleapis.com/download.flutter.io' }
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:8.6.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.20"
+    }
 }
 
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://storage.googleapis.com/download.flutter.io' }
+        // Optional mirrors
+        maven { url 'https://maven.aliyun.com/repository/google' }
+    }
+}
 
-rootProject.buildDir = "../build"
+rootProject.buildDir = '../build'
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
-subprojects {
-    project.evaluationDependsOn(":app")
-}
 
 tasks.register("clean", Delete) {
-    delete rootProject.buildDir
+    delete rootProject.layout.buildDirectory
 }

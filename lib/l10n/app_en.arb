@@ -244,6 +244,9 @@
   "toggleTheme": "Toggle theme",
   "@toggleTheme": { "description": "Label for toggling the app theme" },
   "logout": "Log out",
-  "@logout": { "description": "Label for logging out / signing out" }
+  "@logout": { "description": "Label for logging out / signing out" },
+
+  "enableNotifications": "Enable notifications",
+  "@enableNotifications": { "description": "Label for enabling task reminders/notifications" }
 
 }

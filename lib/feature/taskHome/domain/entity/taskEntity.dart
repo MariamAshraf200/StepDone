@@ -15,6 +15,8 @@ class TaskDetails extends Equatable {
   final String status;
   final String? updatedTime;
   final String? planId;
+  final bool hasNotification; // 👈 جديد
+  final DateTime? notifyAt;
 
   const TaskDetails({
     required this.id,
@@ -28,6 +30,8 @@ class TaskDetails extends Equatable {
     required this.status,
     this.updatedTime,
     this.planId,
+    this.hasNotification = false,
+    this.notifyAt,
   });
 
   /// Default empty task
@@ -45,6 +49,8 @@ class TaskDetails extends Equatable {
       status: TaskStatus.toDo.toTaskStatusString(),
       updatedTime: null,
       planId: null,
+      hasNotification: false,
+      notifyAt: null,
     );
   }
 
@@ -57,6 +63,7 @@ class TaskDetails extends Equatable {
     required TaskPriority priority,
     required String? category,
     required String? planId,
+    required bool notification,
     TaskDetails? existingTask,
     BuildContext? context,
   }) {
@@ -65,6 +72,26 @@ class TaskDetails extends Equatable {
 
     final formattedStart = TimeFormatUtil.formatTime(startTime, context) ?? '';
     final formattedEnd = TimeFormatUtil.formatTime(endTime, context) ?? '';
+
+    // compute notifyAt if notification is enabled and date/startTime available
+    DateTime? notifyAt;
+    if (notification) {
+      try {
+        if (date != null && startTime != null) {
+          notifyAt = DateTime(date.year, date.month, date.day, startTime.hour, startTime.minute);
+          if (notifyAt.isBefore(DateTime.now())) {
+            // fallback: schedule shortly in future if date/time are in the past
+            notifyAt = DateTime.now().add(const Duration(seconds: 5));
+          }
+        } else if (date != null) {
+          // default to 09:00 local time on the given date
+          notifyAt = DateTime(date.year, date.month, date.day, 9, 0);
+          if (notifyAt.isBefore(DateTime.now())) notifyAt = DateTime.now().add(const Duration(seconds: 5));
+        }
+      } catch (_) {
+        notifyAt = null;
+      }
+    }
 
     return (existingTask ?? TaskDetails.empty()).copyWith(
       id: existingTask?.id ?? const Uuid().v4(),
@@ -77,6 +104,8 @@ class TaskDetails extends Equatable {
       category: category ?? 'general',
       status: existingTask?.status ?? TaskStatus.toDo.toTaskStatusString(),
       planId: planId,
+      hasNotification: notification,
+      notifyAt: notifyAt,
     );
   }
 
@@ -93,6 +122,8 @@ class TaskDetails extends Equatable {
     String? status,
     String? updatedTime,
     String? planId,
+    bool? hasNotification,
+    DateTime? notifyAt,
   }) {
     return TaskDetails(
       id: id ?? this.id,
@@ -106,23 +137,25 @@ class TaskDetails extends Equatable {
       status: status ?? this.status,
       updatedTime: updatedTime ?? this.updatedTime,
       planId: planId ?? this.planId,
+      hasNotification: hasNotification ?? this.hasNotification,
+      notifyAt: notifyAt ?? this.notifyAt,
     );
   }
 
   /// Convert entity to model
-  TaskModel toModel() => TaskModel(
-    id: id,
-    title: title,
-    description: description,
-    date: date,
-    time: time,
-    endTime: endTime,
-    priority: priority,
-    category: category,
-    status: status,
-    updatedTime: updatedTime,
-    planId: planId,
-  );
+  TaskModel toModel() => TaskModel.fromEntity(this);
+
+  /// Returns the end time as a DateTime combining `date` and `endTime` (or null if parsing fails).
+  DateTime? get endTimeDateTime {
+    try {
+      final dateDt = DateFormatUtil.tryParseFlexible(date);
+      final tod = TimeFormatUtil.parseFlexibleTime(endTime);
+      if (dateDt != null && tod != null) {
+        return DateTime(dateDt.year, dateDt.month, dateDt.day, tod.hour, tod.minute);
+      }
+    } catch (_) {}
+    return null;
+  }
 
   @override
   List<Object?> get props => [
@@ -137,5 +170,7 @@ class TaskDetails extends Equatable {
     status,
     updatedTime,
     planId,
+    hasNotification,
+    notifyAt,
   ];
 }

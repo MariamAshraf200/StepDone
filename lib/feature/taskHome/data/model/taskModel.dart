@@ -38,6 +38,12 @@ class TaskModel {
   @HiveField(10)
   final String? planId; // New nullable field for plan ID
 
+  @HiveField(11)
+  final bool notification; // New field to indicate whether the task has a notification
+
+  @HiveField(12)
+  final String? notifyAt; // ISO8601 string for scheduled notification time, nullable
+
   // Constructor
   const TaskModel({
     required this.id,
@@ -51,6 +57,8 @@ class TaskModel {
     required this.category,
     this.updatedTime, // Optional, to ensure backward compatibility
     this.planId, // Optional, for backward compatibility
+    this.notification = false,
+    this.notifyAt,
   });
 
   /// Converts the `TaskModel` to a `TaskDetails` entity.
@@ -67,6 +75,8 @@ class TaskModel {
       category: category,
       updatedTime: updatedTime, // Mapping updatedTime to the entity
       planId: planId, // Mapping planId to the entity
+      hasNotification: notification,
+      notifyAt: notifyAt != null ? DateTime.tryParse(notifyAt!) : null,
     );
   }
 
@@ -84,6 +94,8 @@ class TaskModel {
       category: entity.category,
       updatedTime: entity.updatedTime, // Mapping updatedTime from the entity
       planId: entity.planId, // Mapping planId from the entity
+      notification: entity.hasNotification,
+      notifyAt: entity.notifyAt?.toIso8601String(),
     );
   }
 
@@ -100,6 +112,8 @@ class TaskModel {
     String? category,
     String? updatedTime, // Added updatedTime to the copyWith method
     String? planId, // Added planId to the copyWith method
+    bool? notification,
+    String? notifyAt,
   }) {
     return TaskModel(
       id: id ?? this.id,
@@ -113,11 +127,13 @@ class TaskModel {
       category: category ?? this.category,
       updatedTime: updatedTime ?? this.updatedTime, // Copying updatedTime
       planId: planId ?? this.planId, // Copying planId
+      notification: notification ?? this.notification,
+      notifyAt: notifyAt ?? this.notifyAt,
     );
   }
 
   @override
   String toString() {
-    return 'TaskModel(id: $id, title: $title, description: $description, date: $date, time: $time, endTime: $endTime, priority: $priority, status: $status, category: $category, updatedTime: $updatedTime, planId: $planId)';
+    return 'TaskModel(id: $id, title: $title, description: $description, date: $date, time: $time, endTime: $endTime, priority: $priority, status: $status, category: $category, updatedTime: $updatedTime, planId: $planId, notification: $notification, notifyAt: $notifyAt)';
   }
 }

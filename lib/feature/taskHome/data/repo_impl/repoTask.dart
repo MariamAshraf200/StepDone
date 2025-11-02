@@ -5,6 +5,7 @@ import '../dataSource/abstract_data_scource.dart';
 import '../model/taskModel.dart';
 import 'package:mapperapp/core/util/date_and_time/time_sort_util.dart';
 import 'package:mapperapp/core/extensions/error_messages.dart';
+import 'package:flutter/foundation.dart';
 
 class TaskRepositoryImpl implements TaskRepository {
   final TaskLocalDataSource dataSource;
@@ -15,6 +16,10 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<List<TaskDetails>> getTasks() async {
     try {
       final taskModels = await dataSource.getAllTasks();
+      debugPrint('TaskRepository.getTasks -> fetched ${taskModels.length} TaskModel(s)');
+      for (final m in taskModels) {
+        debugPrint('TaskModel: ${m.toString()}');
+      }
       return modelsToEntitiesSortedByTime(taskModels);
     } catch (e) {
       throw Exception(ErrorStrings.loadingTasks(e));
@@ -78,6 +83,7 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<void> addTask(TaskDetails task) async {
     try {
       final taskModel = TaskModel.fromEntity(task);
+      debugPrint('TaskRepository.addTask -> saving TaskModel: ${taskModel.toString()}');
       await dataSource.addTask(taskModel);
     } catch (e) {
       throw Exception(ErrorStrings.addTaskError(e));
@@ -88,6 +94,7 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<void> updateTask(TaskDetails task) async {
     try {
       final taskModel = TaskModel.fromEntity(task);
+      debugPrint('TaskRepository.updateTask -> updating TaskModel: ${taskModel.toString()}');
       await dataSource.updateTask(taskModel);
     } catch (e) {
       throw Exception(ErrorStrings.updateTaskError(e));

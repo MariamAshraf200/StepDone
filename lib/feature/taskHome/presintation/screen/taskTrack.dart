@@ -108,7 +108,6 @@ class TaskDateSelector extends StatelessWidget {
     return DataFormat(
       selectedDate: selectedDate,
       onDateSelected: (date) {
-        // format DateTime → String before passing back
         final formatted = DateFormatUtil.formatDate(date);
         onDateSelected(formatted);
       },
