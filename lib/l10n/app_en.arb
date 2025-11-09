@@ -244,6 +244,24 @@
   "toggleTheme": "Toggle theme",
   "@toggleTheme": { "description": "Label for toggling the app theme" },
   "logout": "Log out",
-  "@logout": { "description": "Label for logging out / signing out" }
+  "@logout": { "description": "Label for logging out / signing out" },
 
+  "titleFieldLabel": "Task Title",
+  "@titleFieldLabel": { "description": "Label for the task title field" },
+  "titleFieldHint": "Enter the task title",
+  "@titleFieldHint": { "description": "Hint for the task title field" },
+  "titleFieldError": "Task title is required",
+  "@titleFieldError": { "description": "Error message for empty task title" },
+
+  "descriptionFieldLabel": "Description",
+  "@descriptionFieldLabel": { "description": "Label for the description field" },
+  "descriptionFieldHint": "Enter the task description",
+  "@descriptionFieldHint": { "description": "Hint for the description field" },
+  "descriptionFieldError": "Description is required",
+  "@descriptionFieldError": { "description": "Error message for empty description" },
+
+  "addButtonLabel": "Add Task",
+  "@addButtonLabel": { "description": "Label for the add task button" },
+  "updateButtonLabel": "Update Task",
+  "@updateButtonLabel": { "description": "Label for the update task button" }
 }

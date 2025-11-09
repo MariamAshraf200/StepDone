@@ -112,13 +112,56 @@ class AppLocalizationsAr extends AppLocalizations {
   String get weeklyProgressTitle => '📊 تحليل تقدم الأسبوع';
 
   @override
+  String get weeklyBackOnTrackMessage => '🚀 لنعد إلى المسار الصحيح الأسبوع القادم!';
+
+  @override
+  String get addReminder => 'إضافة تذكير';
+
+  @override
+  String get noRemindersYet => 'لا توجد تذكيرات بعد';
+
+  @override
+  String get tapPlusToAddOne => 'اضغط زر + لإضافة واحدة';
+
+  @override
+  String get remindersDashboardTitle => 'لوحة التذكيرات';
+
+  @override
+  String remindersCount(int count) {
+    if (count == 0) return 'لا توجد تذكيرات نشطة';
+    if (count == 1) return '١ تذكير نشط';
+    return '$count تذكيرات نشطة';
+  }
+
+  @override
+  String get createReminder => 'إنشاء تذكير';
+
+  @override
+  String get reminderTitle => 'عنوان التذكير';
+
+  @override
+  String get pickDateTime => 'اختر التاريخ والوقت';
+
+  @override
+  String get daily => 'يومي';
+
+  @override
+  String get everyNDays => 'كل N يوم';
+
+  @override
+  String get nLabel => 'N';
+
+  @override
+  String get confirm => 'تأكيد';
+
+  @override
+  String get pleaseFillAllFields => 'يرجى ملء جميع الحقول';
+
+  @override
   String weeklyBestDayMessage(String bestDayName) => '🔥 اتساق ممتاز! أفضل يوم: $bestDayName';
 
   @override
   String get weeklyGoodEffortMessage => '💪 جهد جيد! استمر.';
-
-  @override
-  String get weeklyBackOnTrackMessage => '🚀 لنعد إلى المسار الصحيح الأسبوع القادم!';
 
   @override
   String get addSubtask => 'إضافة مهمة فرعية';

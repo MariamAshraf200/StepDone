@@ -171,6 +171,24 @@
   "@endBeforeStart": { "description": "Validation message when end is before start" },
 
   "enterTime": "أدخل الوقت",
-  "@enterTime": { "description": "Validation hint when time field is empty" }
+  "@enterTime": { "description": "Validation hint when time field is empty" },
 
+  "titleFieldLabel": "عنوان المهمة",
+  "@titleFieldLabel": { "description": "Label for the task title field" },
+  "titleFieldHint": "أدخل عنوان المهمة",
+  "@titleFieldHint": { "description": "Hint for the task title field" },
+  "titleFieldError": "عنوان المهمة مطلوب",
+  "@titleFieldError": { "description": "Error message for empty task title" },
+
+  "descriptionFieldLabel": "الوصف",
+  "@descriptionFieldLabel": { "description": "Label for the description field" },
+  "descriptionFieldHint": "أدخل وصف المهمة",
+  "@descriptionFieldHint": { "description": "Hint for the description field" },
+  "descriptionFieldError": "الوصف مطلوب",
+  "@descriptionFieldError": { "description": "Error message for empty description" },
+
+  "addButtonLabel": "إضافة مهمة",
+  "@addButtonLabel": { "description": "Label for the add task button" },
+  "updateButtonLabel": "تحديث المهمة",
+  "@updateButtonLabel": { "description": "Label for the update task button" }
 }

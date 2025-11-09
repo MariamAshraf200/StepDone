@@ -104,15 +104,31 @@ class TaskItemCard extends StatelessWidget {
               children: [
                 // Top row: Priority + Category + Status
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Wrap(
-                      spacing: 8,
-                      children: [
-                        _buildPriorityChip(context, priorityColor, priorityEnum),
-                        if (task.category.isNotEmpty) _buildCategoryChip(context, task.category),
-                      ],
+                    // Left side takes remaining space and wraps its children
+                    Expanded(
+                      child: Wrap(
+                        spacing: 8,
+                        runSpacing: 6,
+                        children: [
+                          _buildPriorityChip(context, priorityColor, priorityEnum),
+                          if (task.category.isNotEmpty) _buildCategoryChip(context, task.category),
+                        ],
+                      ),
                     ),
+                    const SizedBox(width: 8),
+                    // Show notification icon when task.notifications enabled
+                    if (task.notification) ...[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 6.0),
+                        child: Icon(
+                          Icons.notifications_active,
+                          size: 20,
+                          color: Colors.amber,
+                        ),
+                      ),
+                    ],
+                    // Status icon keeps fixed space to avoid being pushed out
                     _buildStatusIcon(context),
                   ],
                 ),
@@ -143,23 +159,36 @@ class TaskItemCard extends StatelessWidget {
 
                 const SizedBox(height: 6),
 
-                // Date & Time
-                Row(
+                // Date & Time — use Wrap so items can wrap to the next line instead of overflowing
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 6,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     if (task.date.isNotEmpty)
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           const Icon(Icons.calendar_today, size: 14, color: Colors.grey),
                           const SizedBox(width: 4),
-                          Text(
-                            DateFormatUtil.formatFullDate(task.date, locale: Localizations.localeOf(context).toString()),
-                            style: const TextStyle(fontSize: 13, color: Colors.grey),
+                          // constrain the date text so it can ellipsize on very small widths
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxWidth: MediaQuery.of(context).size.width * 0.55,
+                            ),
+                            child: Text(
+                              DateFormatUtil.formatFullDate(task.date, locale: Localizations.localeOf(context).toString()),
+                              style: const TextStyle(fontSize: 13, color: Colors.grey),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
                           ),
                         ],
                       ),
-                    if (task.time.isNotEmpty) ...[
-                      const SizedBox(width: 14),
+
+                    if (task.time.isNotEmpty)
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           const Icon(Icons.access_time, size: 14, color: Colors.grey),
                           const SizedBox(width: 4),
@@ -169,19 +198,19 @@ class TaskItemCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ],
-                    if (task.endTime.isNotEmpty) ...[
-                      const SizedBox(width: 8),
-                      Text(
-                        '-',
-                        style: const TextStyle(fontSize: 13, color: Colors.grey),
+
+                    if (task.endTime.isNotEmpty)
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text('-', style: TextStyle(fontSize: 13, color: Colors.grey)),
+                          const SizedBox(width: 4),
+                          Text(
+                            task.endTime,
+                            style: const TextStyle(fontSize: 13, color: Colors.grey),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 4),
-                      Text(
-                        task.endTime,
-                        style: const TextStyle(fontSize: 13, color: Colors.grey),
-                      ),
-                    ],
                   ],
                 ),
               ],

@@ -54,4 +54,9 @@ class DateFormatUtil {
     if (dt == null) return raw;
     return DateFormat("MMMM d, yyyy", locale).format(dt);
   }
+
+  /// Formats a DateTime as 'dd/MM hh:mm a' (e.g. 05/11 02:30 PM).
+  static String formatDateAndTimeShort(DateTime dt, {String? locale}) {
+    return DateFormat('dd/MM hh:mm a', locale).format(dt);
+  }
 }

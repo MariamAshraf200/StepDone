@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mapperapp/feature/Notification/presentation/screens/notification_screen.dart';
+import '../../../Notification/domain/scheduled_reminder.dart';
 import '../../../../core/i18n/language_cubit.dart';
 import '../../../../core/theme/theme_mode_cubit.dart';
 import '../../../../core/theme/palette_cubit.dart';
@@ -41,7 +44,9 @@ class HomeHeader extends StatelessWidget {
                 String displayName = 'Guest';
                 String? photoUrl;
                 if (state is AuthSignedIn) {
-                  displayName = state.user.name.isNotEmpty ? state.user.name : displayName;
+                  displayName = state.user.name.isNotEmpty
+                      ? state.user.name
+                      : displayName;
                   photoUrl = state.user.photoUrl;
                 }
                 return Row(
@@ -49,11 +54,17 @@ class HomeHeader extends StatelessWidget {
                     CircleAvatar(
                       radius: 22,
                       backgroundColor: Colors.white24,
-                      backgroundImage: (photoUrl != null && photoUrl.isNotEmpty) ? NetworkImage(photoUrl) : null,
+                      backgroundImage: (photoUrl != null && photoUrl.isNotEmpty)
+                          ? NetworkImage(photoUrl)
+                          : null,
                       child: (photoUrl == null || photoUrl.isEmpty)
                           ? Text(
-                              displayName.isNotEmpty ? displayName[0].toUpperCase() : '?',
-                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                              displayName.isNotEmpty
+                                  ? displayName[0].toUpperCase()
+                                  : '?',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
                             )
                           : null,
                     ),
@@ -90,6 +101,77 @@ class HomeHeader extends StatelessWidget {
             // 🎛️ Modern rounded icons
             Row(
               children: [
+                Builder(builder: (ctx) {
+                  try {
+                    if (Hive.isBoxOpen('reminders')) {
+                      final box = Hive.box<ScheduledReminder>('reminders');
+                      return ValueListenableBuilder<Box<ScheduledReminder>>(
+                        valueListenable: box.listenable(),
+                        builder: (context, Box<ScheduledReminder> b, _) {
+                          final count = b.length;
+                          return Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.notifications,
+                                    color: colorScheme.onPrimary, size: 22),
+                                onPressed: () {
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              NotificationScreen()));
+                                },
+                              ),
+                              if (count > 0)
+                                PositionedDirectional(
+                                  top: 4,
+                                  end: 4,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(2),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Colors.black26,
+                                            blurRadius: 4,
+                                            offset: Offset(0, 1)),
+                                      ],
+                                    ),
+                                    constraints: const BoxConstraints(
+                                        minWidth: 18, minHeight: 18),
+                                    child: Center(
+                                      child: Text(
+                                        count > 99 ? '99+' : count.toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  } catch (_) {
+                    // If any Hive error occurs (box not ready / already open with different type), fall back to a simple icon.
+                  }
+
+                  // Fallback: simple notifications button without badge
+                  return IconButton(
+                    icon: Icon(Icons.notifications,
+                        color: colorScheme.onPrimary, size: 22),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NotificationScreen())),
+                  );
+                }),
                 _buildPopupMenu(context, colorScheme),
               ],
             ),
@@ -109,7 +191,8 @@ class HomeHeader extends StatelessWidget {
         } else if (value == 'toggle_theme') {
           // Toggle theme directly and persist via ThemeModeCubit
           final themeMode = context.read<ThemeModeCubit>().state;
-          final newMode = themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+          final newMode =
+              themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
           await context.read<ThemeModeCubit>().setThemeMode(newMode);
         } else if (value == 'toggle_lang') {
           // Toggle language between English and Arabic
@@ -120,9 +203,9 @@ class HomeHeader extends StatelessWidget {
       },
       itemBuilder: (context) {
         final isDark = context.read<ThemeModeCubit>().state == ThemeMode.dark;
-        final isArabic = context.read<LanguageCubit>().state.languageCode == 'ar';
+        final isArabic =
+            context.read<LanguageCubit>().state.languageCode == 'ar';
         return [
-
           PopupMenuItem<String>(
             value: 'toggle_lang',
             child: Row(
@@ -134,7 +217,6 @@ class HomeHeader extends StatelessWidget {
               ],
             ),
           ),
-
           PopupMenuItem<String>(
             value: 'change_palette',
             child: Row(
@@ -151,13 +233,13 @@ class HomeHeader extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Icon(isDark ? Icons.dark_mode : Icons.light_mode, color: colorScheme.inverseSurface),
+                Icon(isDark ? Icons.dark_mode : Icons.light_mode,
+                    color: colorScheme.inverseSurface),
                 const SizedBox(width: 8),
                 Text(l10n.toggleTheme),
               ],
             ),
           ),
-
           PopupMenuItem<String>(
             value: 'logout',
             child: Row(
@@ -187,7 +269,11 @@ class HomeHeader extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Text(l10n.chooseThemeColor, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: colorScheme.onSurface)),
+                child: Text(l10n.chooseThemeColor,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: colorScheme.onSurface)),
               ),
               ...ThemePalette.values.map((p) {
                 final palette = kPalettes[p]!;
@@ -210,7 +296,9 @@ class HomeHeader extends StatelessWidget {
                     ),
                   ),
                   title: Text(colorNames[p.name] ?? p.name),
-                  trailing: p == current ? Icon(Icons.check, color: palette.secondary) : null,
+                  trailing: p == current
+                      ? Icon(Icons.check, color: palette.secondary)
+                      : null,
                   onTap: () async {
                     await context.read<PaletteCubit>().setPalette(p);
                     Navigator.of(ctx).pop();

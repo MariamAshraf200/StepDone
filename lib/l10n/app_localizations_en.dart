@@ -36,6 +36,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paletteMix => 'Mix';
 
   @override
+  String get addReminder => 'Add Reminder';
+
+  @override
+  String get createReminder => 'Create Reminder';
+
+  @override
+  String get noRemindersYet => 'No reminders yet';
+
+  @override
+  String get tapPlusToAddOne => 'Tap the + button to add one';
+
+  @override
+  String get remindersDashboardTitle => 'Reminders Dashboard';
+
+  @override
+  String remindersCount(int count) {
+    if (count == 0) return 'No active reminders';
+    if (count == 1) return '1 active reminder';
+    return '\$count active reminders';
+  }
+
+  @override
+  String get reminderTitle => 'Reminder title';
+
+  @override
+  String get pickDateTime => 'Pick date & time';
+
+  @override
+  String get daily => 'Daily';
+
+  @override
+  String get everyNDays => 'Every N days';
+
+  @override
+  String get nLabel => 'N';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get pleaseFillAllFields => 'Please fill all fields';
+
+  @override
   String get createNewTask => 'Create New Task';
 
   @override

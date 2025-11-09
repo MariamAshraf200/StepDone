@@ -14,12 +14,16 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.example.mapperapp"
-    compileSdk = flutter.compileSdkVersion
+    // Ensure compileSdk is at least 35 as required by flutter_local_notifications
+    // Updated to compile with API 36 to satisfy plugins that require SDK 36
+    compileSdk = 36
     ndkVersion = '29.0.14033849'
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+        // Enable core library desugaring required by some dependencies (e.g. flutter_local_notifications)
+        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
@@ -57,6 +61,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+// Add core library desugaring dependency
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 }
 
 flutter {

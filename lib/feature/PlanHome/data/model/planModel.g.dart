@@ -72,4 +72,3 @@ class PlanModelAdapter extends TypeAdapter<PlanModel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-

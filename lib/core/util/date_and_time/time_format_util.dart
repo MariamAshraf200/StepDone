@@ -70,4 +70,6 @@ class TimeFormatUtil {
     }
     return null;
   }
+
+  static TimeOfDay? tryParse(String raw) => parseFlexibleTime(raw);
 }

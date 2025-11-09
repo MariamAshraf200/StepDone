@@ -149,6 +149,83 @@ abstract class AppLocalizations {
   /// **'Mix'**
   String get paletteMix;
 
+  /// Label for the FAB to add a reminder
+  ///
+  /// In en, this message translates to:
+  /// **'Add Reminder'**
+  String get addReminder;
+
+  /// Title for creating a reminder
+  ///
+  /// In en, this message translates to:
+  /// **'Create Reminder'**
+  String get createReminder;
+
+  /// Message shown when there are no reminders yet
+  ///
+  /// In en, this message translates to:
+  /// **'No reminders yet'**
+  String get noRemindersYet;
+
+  /// Helper text shown on empty reminders screen
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the + button to add one'**
+  String get tapPlusToAddOne;
+
+  /// Title for the reminders dashboard header
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders Dashboard'**
+  String get remindersDashboardTitle;
+
+  /// Returns a localized summary for the number of active reminders.
+  ///
+  /// Example (en): `2 active reminders`
+  String remindersCount(int count);
+
+  /// Label for the reminder title field
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder title'**
+  String get reminderTitle;
+
+  /// Button label shown to pick date and time
+  ///
+  /// In en, this message translates to:
+  /// **'Pick date & time'**
+  String get pickDateTime;
+
+  /// FilterChip label for daily repetition
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get daily;
+
+  /// FilterChip label for every-N-days repetition
+  ///
+  /// In en, this message translates to:
+  /// **'Every N days'**
+  String get everyNDays;
+
+  /// Label for the 'N' input field
+  ///
+  /// In en, this message translates to:
+  /// **'N'**
+  String get nLabel;
+
+  /// Confirm button label in the add reminder sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// Validation message when required fields are empty
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill all fields'**
+  String get pleaseFillAllFields;
+
   /// Title for the Add Task screen
   ///
   /// In en, this message translates to:
