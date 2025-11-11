@@ -105,7 +105,6 @@ class TaskItemCard extends StatelessWidget {
                 // Top row: Priority + Category + Status
                 Row(
                   children: [
-                    // Left side takes remaining space and wraps its children
                     Expanded(
                       child: Wrap(
                         spacing: 8,

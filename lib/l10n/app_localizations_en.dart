@@ -208,6 +208,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get seeAll => 'See All';
 
   @override
+  String get bottomNavPlan => 'Plan';
+
+  @override
+  String get bottomNavHome => 'Home';
+
+
+  @override
   String get selectCategory => 'Select Category';
 
   @override
@@ -350,6 +357,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get weeklyProgressTitle => '📊 Weekly Progress Analysis';
+
+  @override
+  String get title => 'Reminder';
 
   @override
   String weeklyBestDayMessage(String bestDayName) => '🔥 Excellent consistency! Best day: $bestDayName';

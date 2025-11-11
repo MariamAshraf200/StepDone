@@ -4,7 +4,7 @@ import 'app_localizations.dart';
 
 /// The translations for Arabic (`ar`).
 class AppLocalizationsAr extends AppLocalizations {
-  AppLocalizationsAr([String locale = 'ar']) : super(locale);
+  AppLocalizationsAr([super.locale = 'ar']);
 
   @override
   String get english => 'الإنجليزية';
@@ -140,6 +140,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reminderTitle => 'عنوان التذكير';
 
   @override
+  String get title => 'تذكير';
+
+  @override
   String get pickDateTime => 'اختر التاريخ والوقت';
 
   @override
@@ -189,6 +192,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get seeAll => 'عرض الكل';
+
+  @override
+  String get bottomNavPlan => 'الخطة';
+
+  @override
+  String get bottomNavHome => 'الرئيسية';
+  
 
   @override
   String get myPlan => 'خطتي';

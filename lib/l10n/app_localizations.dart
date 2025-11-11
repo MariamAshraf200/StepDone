@@ -491,6 +491,17 @@ abstract class AppLocalizations {
   /// **'See All'**
   String get seeAll;
 
+  /// Bottom navigation label: Plan
+  ///
+  /// In en, this message translates to:
+  /// **'Plan'**
+  String get bottomNavPlan;
+
+  /// Bottom navigation label: Home
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get bottomNavHome;
   /// Hint text for selecting a category
   ///
   /// In en, this message translates to:
@@ -868,6 +879,12 @@ String get dateFormat;
   /// In en, this message translates to:
   /// **'Task Management App'**
   String get appTitle;
+
+  /// Title used for small reminder dialogs and cards
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get title;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

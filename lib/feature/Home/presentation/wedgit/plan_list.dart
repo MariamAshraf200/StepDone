@@ -31,22 +31,35 @@ class PlanList extends StatelessWidget {
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: ListView.separated(
-              shrinkWrap: true,
-              itemCount: plans.length,
-              separatorBuilder: (context, index) => const Divider(),
-              itemBuilder: (context, index) {
-                final plan = plans[index];
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                // Choose a comfortable card width depending on available space
+                final maxWidth = constraints.maxWidth;
+                final cardWidth = (maxWidth > 600) ? 420.0 : (maxWidth * 0.78).clamp(260.0, 420.0);
 
-                // Pass raw end date and raw time to the card; the card will format using util functions
-                final tasks = plan.tasks.cast<TaskPlan>();
+                return SizedBox(
+                  height: 220, // sufficient height for the card content
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: plans.length,
+                    padding: const EdgeInsets.only(right: 16.0),
+                    separatorBuilder: (context, index) => const SizedBox(width: 12),
+                    itemBuilder: (context, index) {
+                      final plan = plans[index];
+                      final tasks = plan.tasks.cast<TaskPlan>();
 
-                return PlanCardCombined(
-                  id: plan.id,
-                  title: plan.title,
-                  tasks: tasks,
-                  endDateRaw: plan.endDate,
-                  updatedTimeRaw: plan.updatedTime,
+                      return SizedBox(
+                        width: cardWidth,
+                        child: PlanCardCombined(
+                          id: plan.id,
+                          title: plan.title,
+                          tasks: tasks,
+                          endDateRaw: plan.endDate,
+                          updatedTimeRaw: plan.updatedTime,
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             ),
