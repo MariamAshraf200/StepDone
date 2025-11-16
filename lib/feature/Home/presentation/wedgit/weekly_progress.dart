@@ -1,3 +1,4 @@
+import 'package:StepDone/l10n/l10n_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -7,7 +8,6 @@ import '../bloc/home_state.dart';
 import '../bloc/home_event.dart';
 import '../../../taskHome/presintation/bloc/taskBloc/bloc.dart';
 import '../../../taskHome/presintation/bloc/taskBloc/state.dart' as taskState;
-import 'package:mapperapp/l10n/l10n_extension.dart';
 
 class WeeklyProgressWidget extends StatelessWidget {
   const WeeklyProgressWidget({super.key});

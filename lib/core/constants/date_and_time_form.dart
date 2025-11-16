@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mapperapp/l10n/app_localizations.dart';
+
+import '../../l10n/app_localizations.dart';
 
 String formatedDate(
     BuildContext context,

@@ -1,6 +1,7 @@
-import 'package:mapperapp/core/util/date_and_time/time_format_util.dart';
-import 'package:mapperapp/feature/taskHome/data/model/taskModel.dart';
-import 'package:mapperapp/feature/taskHome/domain/entity/taskEntity.dart';
+
+import '../../../feature/taskHome/data/model/taskModel.dart';
+import '../../../feature/taskHome/domain/entity/taskEntity.dart';
+import 'time_format_util.dart';
 
 /// Utilities to parse time strings and sort task models/entities by start time.
 ///

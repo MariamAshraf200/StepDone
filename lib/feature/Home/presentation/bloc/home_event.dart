@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:mapperapp/feature/taskHome/domain/entity/taskEntity.dart';
+
+import '../../../taskHome/domain/entity/taskEntity.dart';
 
 abstract class HomeEvent extends Equatable {
   const HomeEvent();

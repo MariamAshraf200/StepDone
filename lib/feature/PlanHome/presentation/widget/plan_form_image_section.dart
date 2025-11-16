@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mapperapp/l10n/app_localizations.dart';
+
+import '../../../../l10n/app_localizations.dart';
 class PlanFormImageSection extends StatelessWidget {
   final List<String> initialImages;
   final List<XFile> pickedImages;

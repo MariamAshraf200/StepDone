@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:label="mapperapp"
+        android:label="StepDone"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <!-- Receivers required to reschedule notifications after reboot and to deliver scheduled notifications -->

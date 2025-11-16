@@ -1,3 +1,4 @@
+import 'package:StepDone/l10n/l10n_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/reminder_cubit.dart';
@@ -6,7 +7,6 @@ import '../widgets/notification_header.dart';
 import '../widgets/reminder_card.dart';
 import '../widgets/notification_empty.dart';
 import '../widgets/add_reminder_sheet.dart';
-import 'package:mapperapp/l10n/l10n_extension.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});

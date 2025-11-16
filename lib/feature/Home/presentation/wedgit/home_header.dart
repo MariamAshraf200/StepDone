@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:mapperapp/feature/Notification/presentation/screens/notification_screen.dart';
 import '../../../Notification/domain/scheduled_reminder.dart';
 import '../../../../core/i18n/language_cubit.dart';
 import '../../../../core/theme/theme_mode_cubit.dart';
 import '../../../../core/theme/palette_cubit.dart';
 import '../../../../core/theme/palettes.dart';
+import '../../../Notification/presentation/screens/notification_screen.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../auth/presentation/bloc/auth_event.dart';
 import '../../../../l10n/l10n_extension.dart';

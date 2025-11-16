@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mapperapp/feature/taskHome/domain/entity/taskEntity.dart';
-import 'package:mapperapp/feature/taskHome/presintation/Widget/item/task_item_card.dart';
-import 'package:mapperapp/l10n/app_localizations.dart';
+
+import '../../../../l10n/app_localizations.dart';
+import '../../../taskHome/domain/entity/taskEntity.dart';
+import '../../../taskHome/presintation/Widget/item/task_item_card.dart';
 
 class TaskList extends StatelessWidget {
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mapperapp/core/util/widgets/loading_elevate_icon_button.dart';
-import 'package:mapperapp/l10n/app_localizations.dart';
+
+import '../../../../../core/util/widgets/loading_elevate_icon_button.dart';
+import '../../../../../l10n/app_localizations.dart';
 
 class PlanDetailsBottomButton extends StatelessWidget {
   final VoidCallback onEdit;

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../../injection_imports.dart';
 import '../../../../core/util/custom_builders/navigate_to_screen.dart';
-import 'package:mapperapp/l10n/app_localizations.dart';
 import '../widget/plan_details/plan_image_section.dart';
 
 class PlanDetailsScreen extends StatefulWidget {

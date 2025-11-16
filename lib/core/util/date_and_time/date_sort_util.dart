@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
-import 'package:mapperapp/feature/PlanHome/data/model/planModel.dart';
-import 'package:mapperapp/feature/PlanHome/domain/entities/plan_entity.dart';
+
+import '../../../feature/PlanHome/data/model/planModel.dart';
+import '../../../feature/PlanHome/domain/entities/plan_entity.dart';
 
 /// Utilities to parse flexible date strings and sort plans by start date.
 ///
