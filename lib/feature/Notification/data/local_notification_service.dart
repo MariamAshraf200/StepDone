@@ -7,21 +7,25 @@ import 'package:timezone/timezone.dart' as tz;
 import '../../taskHome/domain/entity/taskEntity.dart';
 
 class LocalNotificationService {
-  // 🔹 Plugin instance
+  // Plugin
   static final _plugin = FlutterLocalNotificationsPlugin();
 
-  // 🔹 Stream for handling tap events
-  static final StreamController<NotificationResponse> streamController = StreamController.broadcast();
+  // Stream: notification tap
+  static final StreamController<NotificationResponse> streamController =
+  StreamController.broadcast();
 
-  // 🔹 Channel IDs
+  // Channels
   static const _basicChannelId = 'basic_channel';
   static const _scheduledChannelId = 'scheduled_channel';
   static const _repeatChannelId = 'repeat_channel';
 
-  // Helper: convert taskId (string) → positive int for notification id
-  static int _idFromString(String value) => value.hashCode & 0x7fffffff;
+  // Hash string → int
+  static int _idFromString(String value) =>
+      value.hashCode & 0x7fffffff;
 
-  // 🔹 Initialize notification service
+  // ---------------------------------------------------------
+  // INIT
+  // ---------------------------------------------------------
   static Future<void> init() async {
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
     const iOS = DarwinInitializationSettings();
@@ -33,18 +37,19 @@ class LocalNotificationService {
       onDidReceiveBackgroundNotificationResponse: _onTap,
     );
 
-    // Initialize timezone once
+    // TimeZone
     tz.initializeTimeZones();
     final tzName = await FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(tzName.identifier));
   }
 
-  // 🔹 Handle tap
   static void _onTap(NotificationResponse response) {
     streamController.add(response);
   }
 
-  // 🔹 Safe show (handles invalid sound errors)
+  // ---------------------------------------------------------
+  // SAFE SHOW
+  // ---------------------------------------------------------
   static Future<void> _safeShow({
     required int id,
     required String title,
@@ -56,7 +61,6 @@ class LocalNotificationService {
       await _plugin.show(id, title, body, details, payload: payload);
     } on PlatformException catch (e) {
       if (e.code.contains('sound')) {
-        // Retry without sound if invalid
         final fallback = NotificationDetails(
           android: AndroidNotificationDetails(
             _basicChannelId,
@@ -72,7 +76,9 @@ class LocalNotificationService {
     }
   }
 
-  // 🔹 Show an immediate notification
+  // ---------------------------------------------------------
+  // IMMEDIATE NOTIFICATION
+  // ---------------------------------------------------------
   static Future<void> notifyForTask(TaskDetails task) async {
     if (!task.notification) return;
 
@@ -95,12 +101,18 @@ class LocalNotificationService {
     );
   }
 
-  // 🔹 Schedule a notification for a specific date/time
-  static Future<bool> notifyForTaskScheduled(TaskDetails task, DateTime scheduledDateTime) async {
+  // ---------------------------------------------------------
+  // SCHEDULE SPECIFIC DATE
+  // ---------------------------------------------------------
+  static Future<bool> notifyForTaskScheduled(
+      TaskDetails task,
+      DateTime scheduledDateTime,
+      ) async {
     if (!task.notification) return false;
 
     final id = _idFromString(task.id);
     final tzDateTime = tz.TZDateTime.from(scheduledDateTime, tz.local);
+
     final details = NotificationDetails(
       android: AndroidNotificationDetails(
         _scheduledChannelId,
@@ -120,7 +132,7 @@ class LocalNotificationService {
         payload: task.id,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       );
-      return true; // ✅ نجحت بدقة
+      return true;
     } catch (e) {
       await _plugin.zonedSchedule(
         id,
@@ -131,21 +143,24 @@ class LocalNotificationService {
         payload: task.id,
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       );
-      return false; // ✅ fallback إلى وضع غير دقيق
+      return false;
     }
   }
 
-  // 🔹 Schedule repeating notifications (daily or every X days)
+  // ---------------------------------------------------------
+  // REPEAT DAILY or EVERY X DAYS
+  // ---------------------------------------------------------
   static Future<List<int>> scheduleTextRepeatNotification({
     required String idBaseString,
     String title = 'Reminder',
     required String text,
     required DateTime firstDateTime,
     int daysInterval = 1,
-    int occurrences = 30,
+    int occurrences = 60,
     String? payload,
   }) async {
     final baseId = _idFromString(idBaseString);
+
     final details = NotificationDetails(
       android: AndroidNotificationDetails(
         _repeatChannelId,
@@ -155,28 +170,36 @@ class LocalNotificationService {
       ),
     );
 
-    final first = tz.TZDateTime.from(firstDateTime, tz.local);
+    final firstTZ = tz.TZDateTime.from(firstDateTime, tz.local);
     final ids = <int>[];
 
+    // -------------------------------------------------------------
+    // 🔹 DAILY REPEAT
+    // -------------------------------------------------------------
     if (daysInterval == 1) {
-      // Daily repetition handled automatically
       await _plugin.zonedSchedule(
         baseId,
         title,
         text,
-        first,
+        firstTZ,
         details,
         payload: payload,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        matchDateTimeComponents: DateTimeComponents.time,
+        matchDateTimeComponents: DateTimeComponents.time, // ⭐ مهم
       );
       return [baseId];
     }
 
-    // Multi-day repetition
+    // -------------------------------------------------------------
+    // 🔹 EVERY X DAYS — MANUALLY GENERATE FUTURE OCCURRENCES
+    // -------------------------------------------------------------
     for (int i = 0; i < occurrences; i++) {
       final id = baseId + i;
-      final date = first.add(Duration(days: daysInterval * i));
+      final date = firstTZ.add(Duration(days: daysInterval * i));
+
+      // تجاهل المواعيد التي مرّ وقتها
+      if (date.isBefore(DateTime.now())) continue;
+
       await _plugin.zonedSchedule(
         id,
         title,
@@ -186,13 +209,16 @@ class LocalNotificationService {
         payload: payload,
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       );
+
       ids.add(id);
     }
 
     return ids;
   }
 
-  // 🔹 Cancel a specific notification
+  // ---------------------------------------------------------
+  // CANCEL
+  // ---------------------------------------------------------
   static Future<void> cancelNotification(int id) async {
     await _plugin.cancel(id);
   }

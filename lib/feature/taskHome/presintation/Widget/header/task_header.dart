@@ -50,12 +50,6 @@ class TaskHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Back button with circle border
-          _circleIconButton(
-            icon: Icons.arrow_back_ios_new,
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-
           // Centered full date
           GestureDetector(
             onTap: () => _showDatePicker(context),

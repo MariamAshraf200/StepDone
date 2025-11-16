@@ -13,6 +13,7 @@ class HomeScreenForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildSectionTitle(context, l10n.myPlan),
         const SizedBox(height: 6),

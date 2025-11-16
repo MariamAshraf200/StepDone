@@ -121,7 +121,6 @@ class _PlanHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _circleIconButton(icon: Icons.arrow_back_ios_new, onPressed: onBack),
           Text(
             l10n.myPlans,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

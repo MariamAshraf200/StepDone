@@ -113,11 +113,12 @@ class HomeBodyWidget extends StatelessWidget {
 class HomeBottomNav extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
-  const HomeBottomNav({Key? key, required this.currentIndex, required this.onTap}) : super(key: key);
+  const HomeBottomNav({super.key, required this.currentIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
       currentIndex: currentIndex,
       onTap: onTap,
       items: [
