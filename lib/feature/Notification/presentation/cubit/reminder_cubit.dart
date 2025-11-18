@@ -43,14 +43,15 @@ class ReminderCubit extends Cubit<ReminderState> {
     try {
       await _ensureBox();
 
-      final idBaseString = 'user_${text}_${firstDateTime.toIso8601String()}_${DateTime.now().millisecondsSinceEpoch}';
+      final idBaseString =
+          'rem_${text}_${firstDateTime.toIso8601String()}_${DateTime.now().millisecondsSinceEpoch}';
+
       final ids = await LocalNotificationService.scheduleTextRepeatNotification(
         idBaseString: idBaseString,
-        title: 'Reminder',
+        title: 'StepDone',
         text: text,
         firstDateTime: firstDateTime,
         daysInterval: daysInterval,
-        occurrences: daysInterval > 1 ? 60 : 365,
       );
 
       final reminder = ScheduledReminder(
@@ -72,13 +73,16 @@ class ReminderCubit extends Cubit<ReminderState> {
       await _ensureBox();
       final keys = _box!.keys.toList();
       if (index < 0 || index >= keys.length) return;
+
       final key = keys[index];
       final reminder = _box!.get(key);
+
       if (reminder != null) {
         for (final id in reminder.ids) {
           await LocalNotificationService.cancelNotification(id);
         }
       }
+
       await _box!.delete(key);
       _emitLoaded();
     } catch (e) {
@@ -87,7 +91,6 @@ class ReminderCubit extends Cubit<ReminderState> {
   }
 
   void _emitLoaded() {
-    final items = _box?.values.toList() ?? [];
-    emit(ReminderLoaded(items));
+    emit(ReminderLoaded(_box?.values.toList() ?? []));
   }
 }

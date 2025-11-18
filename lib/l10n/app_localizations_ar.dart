@@ -140,6 +140,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reminderTitle => 'عنوان التذكير';
 
   @override
+  String get reminder => 'تذكير';
+
+  @override
   String get title => 'تذكير';
 
   @override
@@ -407,4 +410,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get appTitle => 'تراك تاسك ';
+
+  @override
+  String get enableNotification => 'تفعيل الإشعارات';
 }

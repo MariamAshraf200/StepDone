@@ -1,81 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../../../../../core/util/date_and_time/date_format_util.dart';
 import '../../../../../core/util/date_and_time/time_format_util.dart';
 import '../../../../Notification/data/local_notification_service.dart';
 import '../../../domain/entity/taskEntity.dart';
 
-/// A clean helper class that manages scheduling, sending, and cancelling
-/// notifications for TaskDetails objects.
+/// One-time ONLY notification helper for tasks.
 class TaskNotificationHelper {
-  TaskNotificationHelper._(); // Prevent instantiation
+  TaskNotificationHelper._();
 
-  /// Schedule or show an immediate notification for a task.
-  ///
-  /// Logic:
-  /// - If `notificationDate` or `notificationTime` is set → schedule for that moment.
-  /// - If not → show immediately.
-  ///
-  /// Returns:
-  /// - `true`: exact scheduled alarm.
-  /// - `false`: inexact schedule (fallback mode).
-  /// - `null`: immediate notification.
   static Future<bool?> scheduleOrNotifyForTask(TaskDetails task) async {
     try {
-      final scheduledDateTime = _parseScheduledDateTime(task);
+      final scheduled = _parseTaskDate(task);
 
-      // If a future date is valid → schedule
-      if (scheduledDateTime != null && scheduledDateTime.isAfter(DateTime.now())) {
-        try {
-          return await LocalNotificationService.notifyForTaskScheduled(task, scheduledDateTime);
-        } on PlatformException catch (e) {
-          if (e.code == 'exact_alarms_not_permitted') {
-            debugPrint('⚠️ Exact alarms not permitted: ${e.message}');
-            return false;
-          }
-          debugPrint('⚠️ Scheduling error: ${e.code} - ${e.message}');
-          await LocalNotificationService.notifyForTask(task);
-          return null;
-        }
+      // Scheduled once
+      if (scheduled != null && scheduled.isAfter(DateTime.now())) {
+        return await LocalNotificationService.notifyForTaskScheduled(task, scheduled);
       }
 
-      // Otherwise show immediately
-      await LocalNotificationService.notifyForTask(task);
+      // Immediate
+      await LocalNotificationService.notifyNow(
+        task.id.hashCode & 0x7fffffff,
+        task.title,
+        task.description,
+      );
+
       return null;
-    } catch (e, st) {
-      debugPrint('❌ scheduleOrNotifyForTask failed: $e\n$st');
+
+    } catch (e) {
+      debugPrint("❌ Error: $e");
       return null;
     }
   }
 
-  /// Parse the task’s date and time fields safely into a DateTime object.
-  static DateTime? _parseScheduledDateTime(TaskDetails task) {
+  static DateTime? _parseTaskDate(TaskDetails task) {
     try {
-      final dateSource = task.notificationDate.isNotEmpty ? task.notificationDate : task.date;
-      final timeSource = task.notificationTime.isNotEmpty ? task.notificationTime : task.time;
+      final dateStr = task.notificationDate.isNotEmpty
+          ? task.notificationDate
+          : task.date;
 
-      if (dateSource.isEmpty) return null;
+      final timeStr = task.notificationTime.isNotEmpty
+          ? task.notificationTime
+          : task.time;
 
-      final parsedDate = DateFormatUtil.parseDate(dateSource);
-      final parsedTime = (timeSource.isNotEmpty)
-          ? TimeFormatUtil.tryParse(timeSource)
+      if (dateStr.isEmpty) return null;
+
+      final d = DateFormatUtil.parseDate(dateStr);
+      final t = timeStr.isNotEmpty
+          ? TimeFormatUtil.tryParse(timeStr)
           : const TimeOfDay(hour: 9, minute: 0);
 
-      return DateTime(parsedDate.year, parsedDate.month, parsedDate.day, parsedTime!.hour, parsedTime.minute);
-    } catch (e) {
-      debugPrint('⚠️ Failed to parse date/time for task: $e');
+      return DateTime(d.year, d.month, d.day, t!.hour, t.minute);
+
+    } catch (_) {
       return null;
     }
   }
 
-  /// Cancel any scheduled notification for a task using its hashed id.
   static Future<void> cancelForTask(TaskDetails task) async {
-    final notifyId = task.id.hashCode & 0x7fffffff;
-    try {
-      await LocalNotificationService.cancelNotification(notifyId);
-      debugPrint('🟢 Notification $notifyId cancelled successfully.');
-    } catch (e, st) {
-      debugPrint('❌ Failed to cancel notification $notifyId: $e\n$st');
-    }
+    final id = task.id.hashCode & 0x7fffffff;
+    await LocalNotificationService.cancelNotification(id);
   }
 }

@@ -38,6 +38,12 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // Define manifestPlaceholders so ${applicationName} used in AndroidManifest.xml
+        // resolves to a valid application class. The default Flutter Application
+        // class is used here which is compatible with v2 embedding when the
+        // Flutter Gradle plugin starts the engine. If you use a custom Application
+        // subclass, change this value to your class (e.g. ".MyApplication").
+        manifestPlaceholders = [ applicationName: "io.flutter.app.FlutterApplication" ]
     }
 
     // signingConfigs: configure release signing from key.properties if available

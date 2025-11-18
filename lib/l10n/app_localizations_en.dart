@@ -409,4 +409,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appTitle => 'Task Tracker';
+
+  @override
+  String get enableNotification => 'Enable Notifications';
+
+  @override
+  String get reminder => 'Reminder';
 }

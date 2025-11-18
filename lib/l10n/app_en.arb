@@ -263,5 +263,10 @@
   "addButtonLabel": "Add Task",
   "@addButtonLabel": { "description": "Label for the add task button" },
   "updateButtonLabel": "Update Task",
-  "@updateButtonLabel": { "description": "Label for the update task button" }
+  "@updateButtonLabel": { "description": "Label for the update task button" },
+
+  "reminder": "Reminder",
+  "@reminder": {
+    "description": "Label for Reminder"
+  }
 }

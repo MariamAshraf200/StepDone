@@ -157,7 +157,7 @@ class _TaskFormState extends State<TaskForm>
         : null;
 
     return SwitchListTile(
-      title: Text('Enable notification'),
+      title: Text(context.l10n.enableNotification),
       subtitle: subtitle,
       value: _notificationEnabled,
       onChanged: (v) async {

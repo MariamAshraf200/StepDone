@@ -190,5 +190,10 @@
   "addButtonLabel": "إضافة مهمة",
   "@addButtonLabel": { "description": "Label for the add task button" },
   "updateButtonLabel": "تحديث المهمة",
-  "@updateButtonLabel": { "description": "Label for the update task button" }
+  "@updateButtonLabel": { "description": "Label for the update task button" },
+
+  "reminder": "تذكير",
+  "@reminder": {
+    "description": "Label for Reminder"
+  }
 }

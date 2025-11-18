@@ -885,6 +885,16 @@ String get dateFormat;
   /// In en, this message translates to:
   /// **'Reminder'**
   String get title;
+
+  /// Getter for enableNotification.
+  /// This should return the localized string for enabling notifications.
+  String get enableNotification;
+
+  /// Label for Reminder
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get reminder;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
