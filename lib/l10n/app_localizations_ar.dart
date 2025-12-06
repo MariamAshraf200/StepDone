@@ -155,6 +155,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get everyNDays => 'كل N يوم';
 
   @override
+  String everyHours(int hours) {
+    if (hours == 1) return 'كل ساعة';
+    return 'كل $hours ساعة';
+  }
+
+  @override
+  String hoursShort(int hours) {
+    // Arabic compact form: number + 'س' (short for ساعة)
+    return '$hoursس';
+  }
+
+  @override
   String get nLabel => 'N';
 
   @override

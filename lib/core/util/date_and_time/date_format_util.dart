@@ -59,4 +59,12 @@ class DateFormatUtil {
   static String formatDateAndTimeShort(DateTime dt, {String? locale}) {
     return DateFormat('dd/MM hh:mm a', locale).format(dt);
   }
+
+  /// Formats a DateTime as 'dd/MM HH:mm' using 24-hour clock (e.g. 26/11 14:30).
+  ///
+  /// Use this for compact, locale-independent displays where a 24-hour
+  /// representation is desired.
+  static String formatDateAndTimeCompact(DateTime dt) {
+    return DateFormat('dd/MM HH:mm').format(dt);
+  }
 }

@@ -37,7 +37,7 @@ class ReminderCubit extends Cubit<ReminderState> {
   Future<void> scheduleReminder({
     required String text,
     required DateTime firstDateTime,
-    int daysInterval = 1,
+    int? hoursInterval,
   }) async {
     emit(ReminderLoading());
     try {
@@ -46,18 +46,22 @@ class ReminderCubit extends Cubit<ReminderState> {
       final idBaseString =
           'rem_${text}_${firstDateTime.toIso8601String()}_${DateTime.now().millisecondsSinceEpoch}';
 
+      // Default to daily repeat when no hoursInterval is provided.
+      final repeatInterval = hoursInterval != null
+          ? Duration(hours: hoursInterval)
+          : const Duration(days: 1);
+
       final ids = await LocalNotificationService.scheduleTextRepeatNotification(
         idBaseString: idBaseString,
         title: 'StepDone',
-        text: text,
         firstDateTime: firstDateTime,
-        daysInterval: daysInterval,
+        body: text,
+        repeatInterval: repeatInterval,
       );
 
       final reminder = ScheduledReminder(
         text: text,
         dateTime: firstDateTime,
-        daysInterval: daysInterval,
         ids: ids,
       );
 

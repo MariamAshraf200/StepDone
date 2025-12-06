@@ -10,7 +10,6 @@ class ScheduledReminderAdapter extends TypeAdapter<ScheduledReminder> {
     final text = reader.readString();
     final millis = reader.readInt();
     final dateTime = DateTime.fromMillisecondsSinceEpoch(millis);
-    final daysInterval = reader.readInt();
     final idsLength = reader.readInt();
     final ids = <int>[];
     for (var i = 0; i < idsLength; i++) {
@@ -19,7 +18,6 @@ class ScheduledReminderAdapter extends TypeAdapter<ScheduledReminder> {
     return ScheduledReminder(
       text: text,
       dateTime: dateTime,
-      daysInterval: daysInterval,
       ids: ids,
     );
   }
@@ -28,7 +26,6 @@ class ScheduledReminderAdapter extends TypeAdapter<ScheduledReminder> {
   void write(BinaryWriter writer, ScheduledReminder obj) {
     writer.writeString(obj.text);
     writer.writeInt(obj.dateTime.millisecondsSinceEpoch);
-    writer.writeInt(obj.daysInterval);
     writer.writeInt(obj.ids.length);
     for (final id in obj.ids) {
       writer.writeInt(id);

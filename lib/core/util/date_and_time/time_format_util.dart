@@ -30,7 +30,9 @@ class TimeFormatUtil {
   /// Parses a time string in either 'hh:mm a' (AM/PM) or 'HH:mm' (24-hour) formats.
   /// Returns a TimeOfDay on success, or null if parsing fails.
   static TimeOfDay? parseFlexibleTime(String raw) {
-    final s = raw.trim();
+    // Normalize Arabic AM/PM to English equivalents
+    final normalized = raw.replaceAll('ص', 'AM').replaceAll('م', 'PM');
+    final s = normalized.trim();
     if (s.isEmpty) return null;
     // Try AM/PM parser
     try {
@@ -72,4 +74,18 @@ class TimeFormatUtil {
   }
 
   static TimeOfDay? tryParse(String raw) => parseFlexibleTime(raw);
+}
+
+extension TimeOfDayExtensions on TimeOfDay {
+  /// Returns a 24-hour formatted string 'HH:mm' (e.g. 14:30).
+  String to24HourString() {
+    final hh = hour.toString().padLeft(2, '0');
+    final mm = minute.toString().padLeft(2, '0');
+    return '$hh:$mm';
+  }
+}
+
+extension DateTimeTimeFormatting on DateTime {
+  /// Formats the time portion of this DateTime as 'HH:mm'.
+  String to24HourTime() => TimeOfDay.fromDateTime(this).to24HourString();
 }

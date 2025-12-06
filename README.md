@@ -1,4 +1,4 @@
-# Task & Plan Manager App  
+# StepDone App  
 
 ## License  
 This project is licensed under the MIT License © 2025  [Mariam Ashraf](https://github.com/MariamAshraf200)- see the [LICENSE](./LICENSE).  

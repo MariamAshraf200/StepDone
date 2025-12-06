@@ -70,6 +70,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get everyNDays => 'Every N days';
 
   @override
+  String everyHours(int hours) {
+    if (hours == 1) return 'every hour';
+    return 'every $hours hours';
+  }
+
+  @override
+  String hoursShort(int hours) {
+    // Compact English form like '1h', '3h'
+    return '${hours}h';
+  }
+
+  @override
   String get nLabel => 'N';
 
   @override

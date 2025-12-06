@@ -208,6 +208,17 @@ abstract class AppLocalizations {
   /// **'Every N days'**
   String get everyNDays;
 
+  /// Returns a localized string for hourly repetition.
+  ///
+  /// Example (en): `every hour` or `every 3 hours` when hours=3
+  String everyHours(int hours);
+
+  /// Short localized label for hours used in compact UI elements (e.g. "1h", "3h").
+  /// Implementations should return a concise, locale-appropriate abbreviation.
+  ///
+  /// Example (en): `1h`, `3h`.
+  String hoursShort(int hours);
+
   /// Label for the 'N' input field
   ///
   /// In en, this message translates to:

@@ -23,14 +23,7 @@
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-        <receiver android:name="dev.fluttercommunity.plus.androidalarmmanager.AlarmBroadcastReceiver" android:exported="true"
-                  tools:ignore="ExportedReceiver,MissingClass"/>
-        <receiver android:name="dev.fluttercommunity.plus.androidalarmmanager.RebootBroadcastReceiver" android:exported="true"
-                  tools:ignore="MissingClass">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
+        <!-- android_alarm_manager_plus receivers removed (dependency no longer used) -->
         <activity
                 android:name=".MainActivity"
                 android:exported="true"

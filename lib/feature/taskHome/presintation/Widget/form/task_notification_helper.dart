@@ -17,15 +17,6 @@ class TaskNotificationHelper {
         return await LocalNotificationService.notifyForTaskScheduled(task, scheduled);
       }
 
-      // Immediate
-      await LocalNotificationService.notifyNow(
-        task.id.hashCode & 0x7fffffff,
-        task.title,
-        task.description,
-      );
-
-      return null;
-
     } catch (e) {
       debugPrint("❌ Error: $e");
       return null;
