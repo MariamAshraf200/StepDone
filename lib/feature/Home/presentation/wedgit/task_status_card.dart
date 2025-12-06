@@ -1,5 +1,5 @@
+import 'package:StepDone/l10n/l10n_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:mapperapp/l10n/l10n_extension.dart';
 
 class TaskStatsCard extends StatelessWidget {
   final int doneTasks;

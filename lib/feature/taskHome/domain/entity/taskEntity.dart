@@ -15,6 +15,9 @@ class TaskDetails extends Equatable {
   final String status;
   final String? updatedTime;
   final String? planId;
+  final bool notification; // whether notifications are enabled for this task
+  final String notificationDate; // optional: date string for the notification (separate from task date)
+  final String notificationTime; // optional: time string for the notification (separate from task time)
 
   const TaskDetails({
     required this.id,
@@ -28,6 +31,9 @@ class TaskDetails extends Equatable {
     required this.status,
     this.updatedTime,
     this.planId,
+    this.notification = false,
+    this.notificationDate = '',
+    this.notificationTime = '',
   });
 
   /// Default empty task
@@ -40,11 +46,13 @@ class TaskDetails extends Equatable {
       time: '',
       endTime: '',
       priority: TaskPriority.medium.toTaskPriorityString(),
-      // store canonical key for the default category so UI can localize display
       category: 'general',
       status: TaskStatus.toDo.toTaskStatusString(),
       updatedTime: null,
       planId: null,
+      notification: false,
+      notificationDate: '',
+      notificationTime: '',
     );
   }
 
@@ -57,11 +65,13 @@ class TaskDetails extends Equatable {
     required TaskPriority priority,
     required String? category,
     required String? planId,
+    bool? notification,
+    String? notificationDate,
+    String? notificationTime,
     TaskDetails? existingTask,
     BuildContext? context,
   }) {
-    final formattedDate =
-        date != null ? DateFormatUtil.formatDate(date) : '';
+    final formattedDate = date != null ? DateFormatUtil.formatDate(date) : '';
 
     final formattedStart = TimeFormatUtil.formatTime(startTime, context) ?? '';
     final formattedEnd = TimeFormatUtil.formatTime(endTime, context) ?? '';
@@ -77,6 +87,9 @@ class TaskDetails extends Equatable {
       category: category ?? 'general',
       status: existingTask?.status ?? TaskStatus.toDo.toTaskStatusString(),
       planId: planId,
+      notification: notification ?? existingTask?.notification ?? false,
+      notificationDate: notificationDate ?? existingTask?.notificationDate ?? '',
+      notificationTime: notificationTime ?? existingTask?.notificationTime ?? '',
     );
   }
 
@@ -93,6 +106,9 @@ class TaskDetails extends Equatable {
     String? status,
     String? updatedTime,
     String? planId,
+    bool? notification,
+    String? notificationDate,
+    String? notificationTime,
   }) {
     return TaskDetails(
       id: id ?? this.id,
@@ -106,6 +122,9 @@ class TaskDetails extends Equatable {
       status: status ?? this.status,
       updatedTime: updatedTime ?? this.updatedTime,
       planId: planId ?? this.planId,
+      notification: notification ?? this.notification,
+      notificationDate: notificationDate ?? this.notificationDate,
+      notificationTime: notificationTime ?? this.notificationTime,
     );
   }
 
@@ -122,6 +141,9 @@ class TaskDetails extends Equatable {
     status: status,
     updatedTime: updatedTime,
     planId: planId,
+    notification: notification,
+    notificationDate: notificationDate,
+    notificationTime: notificationTime,
   );
 
   @override
@@ -137,5 +159,8 @@ class TaskDetails extends Equatable {
     status,
     updatedTime,
     planId,
+    notification,
+    notificationDate,
+    notificationTime,
   ];
 }

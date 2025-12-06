@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mapperapp/l10n/app_localizations.dart';
+
+import '../../../l10n/app_localizations.dart';
 class CategorySelector extends StatefulWidget {
   final List<String> categories;
   final String? selectedCategory;

@@ -38,6 +38,15 @@ class TaskModel {
   @HiveField(10)
   final String? planId; // New nullable field for plan ID
 
+  @HiveField(11)
+  final bool notification; // New field indicating whether notifications are enabled
+
+  @HiveField(12)
+  final String notificationDate; // optional notification date (separate from task date)
+
+  @HiveField(13)
+  final String notificationTime; // optional notification time (separate from task time)
+
   // Constructor
   const TaskModel({
     required this.id,
@@ -51,6 +60,9 @@ class TaskModel {
     required this.category,
     this.updatedTime, // Optional, to ensure backward compatibility
     this.planId, // Optional, for backward compatibility
+    this.notification = false, // Defaults to false for backward compatibility
+    this.notificationDate = '',
+    this.notificationTime = '',
   });
 
   /// Converts the `TaskModel` to a `TaskDetails` entity.
@@ -65,8 +77,11 @@ class TaskModel {
       priority: priority,
       status: status,
       category: category,
-      updatedTime: updatedTime, // Mapping updatedTime to the entity
-      planId: planId, // Mapping planId to the entity
+      updatedTime: updatedTime,
+      planId: planId,
+      notification: notification,
+      notificationDate: notificationDate,
+      notificationTime: notificationTime,
     );
   }
 
@@ -84,6 +99,9 @@ class TaskModel {
       category: entity.category,
       updatedTime: entity.updatedTime, // Mapping updatedTime from the entity
       planId: entity.planId, // Mapping planId from the entity
+      notification: entity.notification, // Map notification from entity
+      notificationDate: entity.notificationDate,
+      notificationTime: entity.notificationTime,
     );
   }
 
@@ -100,6 +118,9 @@ class TaskModel {
     String? category,
     String? updatedTime, // Added updatedTime to the copyWith method
     String? planId, // Added planId to the copyWith method
+    bool? notification, // Added notification to the copyWith method
+    String? notificationDate,
+    String? notificationTime,
   }) {
     return TaskModel(
       id: id ?? this.id,
@@ -113,11 +134,14 @@ class TaskModel {
       category: category ?? this.category,
       updatedTime: updatedTime ?? this.updatedTime, // Copying updatedTime
       planId: planId ?? this.planId, // Copying planId
+      notification: notification ?? this.notification, // Copying notification
+      notificationDate: notificationDate ?? this.notificationDate,
+      notificationTime: notificationTime ?? this.notificationTime,
     );
   }
 
   @override
   String toString() {
-    return 'TaskModel(id: $id, title: $title, description: $description, date: $date, time: $time, endTime: $endTime, priority: $priority, status: $status, category: $category, updatedTime: $updatedTime, planId: $planId)';
+    return 'TaskModel(id: $id, title: $title, description: $description, date: $date, time: $time, endTime: $endTime, priority: $priority, status: $status, category: $category, updatedTime: $updatedTime, planId: $planId, notification: $notification, notificationDate: $notificationDate, notificationTime: $notificationTime)';
   }
 }

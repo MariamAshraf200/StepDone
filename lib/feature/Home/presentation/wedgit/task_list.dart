@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mapperapp/feature/taskHome/domain/entity/taskEntity.dart';
-import '../wedgit/task_card.dart';
-import 'package:mapperapp/l10n/app_localizations.dart';
-import 'package:mapperapp/feature/taskHome/domain/entity/task_enum.dart';
+
+import '../../../../l10n/app_localizations.dart';
+import '../../../taskHome/domain/entity/taskEntity.dart';
+import '../../../taskHome/presintation/Widget/item/task_item_card.dart';
 
 class TaskList extends StatelessWidget {
 
@@ -17,18 +17,12 @@ class TaskList extends StatelessWidget {
     }
 
     return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
+      scrollDirection: Axis.vertical,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Row(
+        child: Column(
           children: tasks.map((task) {
-            return TaskCard(
-              title: task.title,
-              description: task.description,
-              time: task.time,
-              priority: TaskPriorityExtension.fromString(task.priority),
-              status: task.status,
-            );
+            return TaskItemCard(task: task);
           }).toList(),
         ),
       ),

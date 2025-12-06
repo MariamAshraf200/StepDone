@@ -1,20 +1,38 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Permissions required/used by flutter_local_notifications when scheduling and for boot handling -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Permission to schedule exact alarms (declare here; user/device may still require enabling in system settings) -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" tools:ignore="ProtectedPermissions"/>
+    <!-- For exact alarm scheduling on Android 14+, request permission at runtime via the plugin instead of declaring system-only permission here -->
+    <!-- Optional: permission to show full-screen intent notifications if your app uses them -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
-        android:label="mapperapp"
-        android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+            android:label="StepDone"
+            android:icon="@mipmap/ic_launcher">
+        <!-- Receivers required to reschedule notifications after reboot and to deliver scheduled notifications -->
+        <receiver android:exported="true" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
+                  tools:ignore="ExportedReceiver"/>
+        <receiver android:exported="true" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+        <!-- android_alarm_manager_plus receivers removed (dependency no longer used) -->
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:taskAffinity=""
-            android:theme="@style/LaunchTheme"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-            android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize">
+                android:name=".MainActivity"
+                android:exported="true"
+                android:launchMode="singleTop"
+                android:taskAffinity=""
+                android:theme="@style/LaunchTheme"
+                android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+                android:hardwareAccelerated="true"
+                android:windowSoftInputMode="adjustResize" >
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mapperapp/l10n/app_localizations.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/plan_entity.dart';
 import '../widget/plan_form.dart';
 

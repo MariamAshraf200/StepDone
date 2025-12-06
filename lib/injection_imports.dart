@@ -67,10 +67,19 @@ export 'feature/taskHome/presintation/screen/add_task_screen.dart';
 
 // Main screen
 export 'feature/Home/presentation/screen/homeScreen.dart';
+// Home screen supporting widgets
+export 'feature/Home/presentation/screen/home_screen_form.dart';
+export 'feature/Home/presentation/wedgit/home_header.dart';
+export 'feature/Home/presentation/wedgit/plan_list.dart';
+export 'feature/Home/presentation/wedgit/task_list.dart';
+export 'feature/Home/presentation/wedgit/task_status_card.dart';
+export 'feature/Home/presentation/wedgit/weekly_progress.dart';
 // Home feature blocs
 export 'feature/Home/presentation/bloc/home_bloc.dart';
 export 'feature/Home/presentation/bloc/home_event.dart';
 export 'feature/Home/presentation/bloc/home_state.dart';
+// Ensure Plan feature main tracker screen is exported
+export 'feature/PlanHome/presentation/screen/PlanTrack.dart';
 
 // Core
 export 'core/network/hiveServices.dart';

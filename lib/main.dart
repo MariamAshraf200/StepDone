@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'app_bootstrapper.dart';
+import 'feature/Notification/data/local_notification_service.dart';
 import 'injection_imports.dart';
 
 Future<void> main() async {
@@ -11,6 +12,7 @@ Future<void> main() async {
     SystemUiMode.immersiveSticky,
     overlays: SystemUiOverlay.values,
   );
+  await LocalNotificationService.init();
 
   await init();
   runApp(

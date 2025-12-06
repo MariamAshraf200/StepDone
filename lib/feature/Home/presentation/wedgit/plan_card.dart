@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mapperapp/l10n/l10n_extension.dart';
+import '../../../../core/util/date_and_time/date_format_util.dart';
+import '../../../../core/util/date_and_time/time_format_util.dart';
 import '../../../PlanHome/domain/entities/taskPlan.dart';
-import 'package:mapperapp/core/util/date_and_time/date_format_util.dart';
-import 'package:mapperapp/core/util/date_and_time/time_format_util.dart';
-
 import '../../../PlanHome/presentation/screen/plan_details.dart';
 
 class PlanCardCombined extends StatelessWidget {
@@ -11,7 +9,7 @@ class PlanCardCombined extends StatelessWidget {
   final List<TaskPlan> tasks;
   final String? endDateRaw;
   final String? updatedTimeRaw;
-final String id;
+  final String id;
   const PlanCardCombined({
     super.key,
     required this.title,
@@ -65,44 +63,25 @@ final String id;
           context,
           MaterialPageRoute(
             builder: (context) => PlanDetailsScreen(
-            id: id,
+              id: id,
             ),
           ),
         );
       },
       child: Card(
-        elevation: 4,
+        elevation: 6,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(14.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: CircularProgressIndicator(
-                      value: progress,
-                      backgroundColor: Colors.grey[300],
-                      color: colorScheme.secondary,
-                      strokeWidth: 6,
-                    ),
-                  ),
-                  Text(
-                    "${tasks.where((t) => t.status == TaskPlanStatus.done).length}/${tasks.length}",
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(width: 16),
+
+              const SizedBox(width: 12),
+
+              // Main content: title, small badges, subtasks preview, progress bar, end date
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,14 +96,114 @@ final String id;
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
+
                     const SizedBox(height: 8),
-                    LinearProgressIndicator(
-                      value: progress,
-                      color: colorScheme.secondary,
-                      backgroundColor: Colors.grey[300],
-                      minHeight: 8,
+
+                    // Badges row: completed / total
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: colorScheme.secondary.withAlpha((0.12 * 255).round()),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.check_circle,
+                                size: 14,
+                                color: colorScheme.secondary,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                '${tasks.where((t) => t.status == TaskPlanStatus.done).length}/${tasks.length} done',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: colorScheme.onSurface,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(width: 8),
+
+                        // Small spacer or other chips could go here
+                      ],
                     ),
+
                     const SizedBox(height: 8),
+
+                    // Linear progress bar moved under title/badges
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: LinearProgressIndicator(
+                        value: progress,
+                        color: colorScheme.secondary,
+                        backgroundColor: Colors.grey[300],
+                        minHeight: 6,
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    // Subtasks preview (show up to 3)
+                    if (tasks.isNotEmpty) ...[
+                      // Show up to 2 subtasks
+                      for (var i = 0; i < tasks.length && i < 2; i++)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0, bottom: 2.0),
+                          child: Row(
+                            children: [
+                              Icon(
+                                tasks[i].status == TaskPlanStatus.done
+                                    ? Icons.check_circle
+                                    : Icons.radio_button_unchecked,
+                                size: 16,
+                                color: tasks[i].status == TaskPlanStatus.done
+                                    ? colorScheme.secondary
+                                    : Colors.grey,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  tasks[i].text,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: tasks[i].status == TaskPlanStatus.done
+                                        ? Colors.grey[600]
+                                        : Colors.grey[800],
+                                    decoration: tasks[i].status == TaskPlanStatus.done
+                                        ? TextDecoration.lineThrough
+                                        : TextDecoration.none,
+                                    decorationThickness: 1.4,
+                                  ),
+                                   maxLines: 1,
+                                   overflow: TextOverflow.ellipsis,
+                                 ),
+                               ),
+                            ],
+                          ),
+                        ),
+
+                      // If there are more than 2 subtasks, show a small indicator
+                      if (tasks.length > 2)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6.0),
+                          child: Text(
+                            '+${tasks.length - 2} more',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+
+                      const SizedBox(height: 8),
+                    ],
+
                     if (endDisplay != null)
                       Text(
                         endDisplay,
@@ -136,15 +215,7 @@ final String id;
                   ],
                 ),
               ),
-              const SizedBox(width: 16),
-              Text(
-                "${(progress * 100).toStringAsFixed(0)}%\n${context.l10n.complete}",
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+
             ],
           ),
         ),

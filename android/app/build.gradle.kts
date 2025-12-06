@@ -7,12 +7,16 @@ plugins {
 
 android {
     namespace = "com.example.mapperapp"
-    compileSdk = flutter.compileSdkVersion
+    // Ensure compileSdk is at least 35 as required by flutter_local_notifications
+    // Updated to compile with API 36 to satisfy plugins that require SDK 36
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        // Enable core library desugaring required by some dependencies (e.g. flutter_local_notifications)
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -37,6 +41,13 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+}
+
+// Add core library desugaring dependency and optional WindowManager to mitigate Android 12L issues
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+    // Optional: helps with known Flutter issues on Android 12L+ when desugaring is enabled
+    implementation("androidx.window:window:1.2.0")
 }
 
 flutter {

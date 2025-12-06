@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
+import '../../../l10n/app_localizations.dart';
 import '../functions/string_manipulations_and_search.dart';
-import 'package:mapperapp/l10n/app_localizations.dart';
 
 class CustomTextField extends StatefulWidget {
   const CustomTextField({

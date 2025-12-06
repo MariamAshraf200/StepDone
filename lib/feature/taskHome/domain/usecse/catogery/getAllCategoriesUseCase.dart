@@ -1,6 +1,5 @@
 
-import 'package:mapperapp/feature/taskHome/data/model/categoryModel.dart';
-
+import '../../../data/model/categoryModel.dart';
 import '../../repo_interface/repoCatogery.dart';
 
 class GetAllCategoriesUseCase {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mapperapp/l10n/app_localizations.dart';
-
+import '../../../../../l10n/app_localizations.dart';
 import '../../../domain/entities/plan_entity.dart';
 import '../../../domain/entities/taskPlan.dart';
 import '../../bloc/bloc.dart';

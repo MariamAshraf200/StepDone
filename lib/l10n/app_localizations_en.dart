@@ -36,6 +36,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paletteMix => 'Mix';
 
   @override
+  String get addReminder => 'Add Reminder';
+
+  @override
+  String get createReminder => 'Create Reminder';
+
+  @override
+  String get noRemindersYet => 'No reminders yet';
+
+  @override
+  String get tapPlusToAddOne => 'Tap the + button to add one';
+
+  @override
+  String get remindersDashboardTitle => 'Reminders Dashboard';
+
+  @override
+  String remindersCount(int count) {
+    if (count == 0) return 'No active reminders';
+    if (count == 1) return '1 active reminder';
+    return '\$count active reminders';
+  }
+
+  @override
+  String get reminderTitle => 'Reminder title';
+
+  @override
+  String get pickDateTime => 'Pick date & time';
+
+  @override
+  String get daily => 'Daily';
+
+  @override
+  String get everyNDays => 'Every N days';
+
+  @override
+  String everyHours(int hours) {
+    if (hours == 1) return 'every hour';
+    return 'every $hours hours';
+  }
+
+  @override
+  String hoursShort(int hours) {
+    // Compact English form like '1h', '3h'
+    return '${hours}h';
+  }
+
+  @override
+  String get nLabel => 'N';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get pleaseFillAllFields => 'Please fill all fields';
+
+  @override
   String get createNewTask => 'Create New Task';
 
   @override
@@ -163,6 +218,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get seeAll => 'See All';
+
+  @override
+  String get bottomNavPlan => 'Plan';
+
+  @override
+  String get bottomNavHome => 'Home';
+
 
   @override
   String get selectCategory => 'Select Category';
@@ -309,6 +371,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get weeklyProgressTitle => '📊 Weekly Progress Analysis';
 
   @override
+  String get title => 'Reminder';
+
+  @override
   String weeklyBestDayMessage(String bestDayName) => '🔥 Excellent consistency! Best day: $bestDayName';
 
   @override
@@ -356,4 +421,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appTitle => 'Task Tracker';
+
+  @override
+  String get enableNotification => 'Enable Notifications';
+
+  @override
+  String get reminder => 'Reminder';
 }

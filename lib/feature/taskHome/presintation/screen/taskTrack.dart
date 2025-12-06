@@ -1,9 +1,9 @@
+import 'package:StepDone/l10n/l10n_extension.dart';
+
 import '../../../../../injection_imports.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/taskBloc/state.dart' as taskState;
-import 'package:mapperapp/l10n/l10n_extension.dart';
-import '../Widget/header/task_header.dart';
 
 class TaskTrack extends StatefulWidget {
   const TaskTrack({super.key});
@@ -68,10 +68,7 @@ class _TaskTrackState extends State<TaskTrack> {
         borderRadius: BorderRadius.circular(15),
         child: Column(
           children: [
-            TaskHeader(
-              selectedDate: selectedDate,
-              onDatePicked: _updateDate,
-            ),
+
             const SizedBox(height: 10),
             TaskDateSelector(
               selectedDate: selectedDate,
@@ -89,6 +86,9 @@ class _TaskTrackState extends State<TaskTrack> {
           ],
         ),
       ),
+      // Floating action button that navigates to AddTask screen
+      floatingActionButton: CustomFAB(context: context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
@@ -105,10 +105,19 @@ class TaskDateSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Convert the existing `selectedDate` string to a DateTime for the
+    // refactored `DataFormat` widget. We fall back to today if parsing fails.
+    DateTime parsed;
+    try {
+      parsed = DateFormatUtil.parseDate(selectedDate);
+    } catch (_) {
+      parsed = DateTime.now();
+    }
+
     return DataFormat(
-      selectedDate: selectedDate,
+      selectedDate: parsed,
       onDateSelected: (date) {
-        // format DateTime → String before passing back
+        // format DateTime → String before passing back to the rest of the screen
         final formatted = DateFormatUtil.formatDate(date);
         onDateSelected(formatted);
       },
@@ -248,4 +257,3 @@ class TaskListSection extends StatelessWidget {
     );
   }
 }
-

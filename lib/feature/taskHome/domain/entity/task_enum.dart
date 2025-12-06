@@ -1,7 +1,8 @@
+import 'package:StepDone/l10n/l10n_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mapperapp/l10n/app_localizations.dart';
-import 'package:mapperapp/l10n/l10n_extension.dart';
+
+import '../../../../l10n/app_localizations.dart';
 
 enum TaskFilterType { date, priority, status }
 enum TaskPriority { low, medium, high }

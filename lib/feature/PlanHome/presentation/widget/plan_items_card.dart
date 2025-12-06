@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mapperapp/l10n/app_localizations.dart';
 import '../../../../core/util/custom_builders/navigate_to_screen.dart';
 import '../../../../core/util/widgets/custom_dilog.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/plan_entity.dart';
 import '../screen/plan_details.dart';
 import '../screen/updatePlan.dart';

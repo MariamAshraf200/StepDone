@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:mapperapp/feature/PlanHome/domain/entities/taskPlan.dart';
 import '../../domain/entities/plan_entity.dart';
 import '../../domain/entities/plan_enums.dart';
+import '../../domain/entities/taskPlan.dart';
 
 abstract class PlanEvent extends Equatable {
   const PlanEvent();

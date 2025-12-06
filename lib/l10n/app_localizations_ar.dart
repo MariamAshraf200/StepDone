@@ -4,7 +4,7 @@ import 'app_localizations.dart';
 
 /// The translations for Arabic (`ar`).
 class AppLocalizationsAr extends AppLocalizations {
-  AppLocalizationsAr([String locale = 'ar']) : super(locale);
+  AppLocalizationsAr([super.locale = 'ar']);
 
   @override
   String get english => 'الإنجليزية';
@@ -112,13 +112,74 @@ class AppLocalizationsAr extends AppLocalizations {
   String get weeklyProgressTitle => '📊 تحليل تقدم الأسبوع';
 
   @override
+  String get weeklyBackOnTrackMessage => '🚀 لنعد إلى المسار الصحيح الأسبوع القادم!';
+
+  @override
+  String get addReminder => 'إضافة تذكير';
+
+  @override
+  String get noRemindersYet => 'لا توجد تذكيرات بعد';
+
+  @override
+  String get tapPlusToAddOne => 'اضغط زر + لإضافة واحدة';
+
+  @override
+  String get remindersDashboardTitle => 'لوحة التذكيرات';
+
+  @override
+  String remindersCount(int count) {
+    if (count == 0) return 'لا توجد تذكيرات نشطة';
+    if (count == 1) return '١ تذكير نشط';
+    return '$count تذكيرات نشطة';
+  }
+
+  @override
+  String get createReminder => 'إنشاء تذكير';
+
+  @override
+  String get reminderTitle => 'عنوان التذكير';
+
+  @override
+  String get reminder => 'تذكير';
+
+  @override
+  String get title => 'تذكير';
+
+  @override
+  String get pickDateTime => 'اختر التاريخ والوقت';
+
+  @override
+  String get daily => 'يومي';
+
+  @override
+  String get everyNDays => 'كل N يوم';
+
+  @override
+  String everyHours(int hours) {
+    if (hours == 1) return 'كل ساعة';
+    return 'كل $hours ساعة';
+  }
+
+  @override
+  String hoursShort(int hours) {
+    // Arabic compact form: number + 'س' (short for ساعة)
+    return '$hoursس';
+  }
+
+  @override
+  String get nLabel => 'N';
+
+  @override
+  String get confirm => 'تأكيد';
+
+  @override
+  String get pleaseFillAllFields => 'يرجى ملء جميع الحقول';
+
+  @override
   String weeklyBestDayMessage(String bestDayName) => '🔥 اتساق ممتاز! أفضل يوم: $bestDayName';
 
   @override
   String get weeklyGoodEffortMessage => '💪 جهد جيد! استمر.';
-
-  @override
-  String get weeklyBackOnTrackMessage => '🚀 لنعد إلى المسار الصحيح الأسبوع القادم!';
 
   @override
   String get addSubtask => 'إضافة مهمة فرعية';
@@ -146,6 +207,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get seeAll => 'عرض الكل';
+
+  @override
+  String get bottomNavPlan => 'الخطة';
+
+  @override
+  String get bottomNavHome => 'الرئيسية';
+  
 
   @override
   String get myPlan => 'خطتي';
@@ -354,4 +422,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get appTitle => 'تراك تاسك ';
+
+  @override
+  String get enableNotification => 'تفعيل الإشعارات';
 }
