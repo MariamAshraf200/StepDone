@@ -62,7 +62,7 @@ This project is licensed under the MIT License © 2025  [Mariam Ashraf](https://
 * Applying `Clean Architecture` layered design.  
 
 📌 Example Clean Architecture model used:  
-
+<img width="556" height="707" alt="Image" src="https://github.com/user-attachments/assets/772c2503-0f86-4d72-a981-6282c402e180" />
 ## Directory Structure  
 
 ```
