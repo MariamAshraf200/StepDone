@@ -906,6 +906,12 @@ String get dateFormat;
   /// In en, this message translates to:
   /// **'Reminder'**
   String get reminder;
+
+  /// If there are extra subtasks, formatted like "+{count} more"
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} more'**
+  String get moreItems;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

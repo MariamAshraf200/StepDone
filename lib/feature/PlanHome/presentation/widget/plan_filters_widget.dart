@@ -20,7 +20,6 @@ class PlanFiltersWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
-    // Reusable text style for dropdown items using the theme primary color.
     final itemTextStyle = TextStyle(color: colorScheme.primary);
     return Row(
       children: [

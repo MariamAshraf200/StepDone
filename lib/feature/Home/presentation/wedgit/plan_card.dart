@@ -1,3 +1,4 @@
+import 'package:StepDone/l10n/l10n_extension.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/util/date_and_time/date_format_util.dart';
 import '../../../../core/util/date_and_time/time_format_util.dart';
@@ -74,16 +75,18 @@ class PlanCardCombined extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(14.0),
+          padding: const EdgeInsets.all(12.0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
               const SizedBox(width: 12),
 
               // Main content: title, small badges, subtasks preview, progress bar, end date
-              Expanded(
+              Flexible(
+                fit: FlexFit.loose,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Title
@@ -97,7 +100,7 @@ class PlanCardCombined extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
 
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
 
                     // Badges row: completed / total
                     Row(
@@ -118,7 +121,8 @@ class PlanCardCombined extends StatelessWidget {
                               ),
                               const SizedBox(width: 6),
                               Text(
-                                '${tasks.where((t) => t.status == TaskPlanStatus.done).length}/${tasks.length} done',
+                                // use existing localization keys for status
+                                '${tasks.where((t) => t.status == TaskPlanStatus.done).length}/${tasks.length} ${context.l10n.statusDone}',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: colorScheme.onSurface,
@@ -134,7 +138,7 @@ class PlanCardCombined extends StatelessWidget {
                       ],
                     ),
 
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
 
                     // Linear progress bar moved under title/badges
                     ClipRRect(
@@ -143,11 +147,11 @@ class PlanCardCombined extends StatelessWidget {
                         value: progress,
                         color: colorScheme.secondary,
                         backgroundColor: Colors.grey[300],
-                        minHeight: 6,
+                        minHeight: 5,
                       ),
                     ),
 
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
 
                     // Subtasks preview (show up to 3)
                     if (tasks.isNotEmpty) ...[
@@ -157,15 +161,20 @@ class PlanCardCombined extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 4.0, bottom: 2.0),
                           child: Row(
                             children: [
-                              Icon(
-                                tasks[i].status == TaskPlanStatus.done
-                                    ? Icons.check_circle
-                                    : Icons.radio_button_unchecked,
-                                size: 16,
-                                color: tasks[i].status == TaskPlanStatus.done
-                                    ? colorScheme.secondary
-                                    : Colors.grey,
-                              ),
+                              Tooltip(
+                                message: tasks[i].status == TaskPlanStatus.done
+                                    ? context.l10n.statusDone
+                                    : context.l10n.statusToDo,
+                                 child: Icon(
+                                   tasks[i].status == TaskPlanStatus.done
+                                       ? Icons.check_circle
+                                       : Icons.radio_button_unchecked,
+                                   size: 16,
+                                   color: tasks[i].status == TaskPlanStatus.done
+                                       ? colorScheme.secondary
+                                       : Colors.grey,
+                                 ),
+                               ),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
@@ -193,7 +202,7 @@ class PlanCardCombined extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 6.0),
                           child: Text(
-                            '+${tasks.length - 2} more',
+                            '+${tasks.length - 2} ${context.l10n.moreItems}',
                             style: const TextStyle(
                               fontSize: 12,
                               color: Colors.grey,
@@ -201,25 +210,29 @@ class PlanCardCombined extends StatelessWidget {
                           ),
                         ),
 
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                     ],
 
                     if (endDisplay != null)
-                      Text(
-                        endDisplay,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                        ),
+                      Flexible(
+                        child: Text(
+                         endDisplay,
+                         style: const TextStyle(
+                           fontSize: 12,
+                           color: Colors.grey,
+                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                  ],
-                ),
-              ),
+                      ),
+                   ],
+                 ),
+               ),
 
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+             ],
+           ),
+         ),
+       ),
+     );
+   }
+ }

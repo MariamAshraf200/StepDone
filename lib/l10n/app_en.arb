@@ -268,5 +268,16 @@
   "reminder": "Reminder",
   "@reminder": {
     "description": "Label for Reminder"
+  },
+
+  "addPlanTooltip": "Add Plan",
+
+  "done": "done",
+  "toDo": "to do",
+  "moreItems": "+{count} more",
+  "@moreItems": {
+    "placeholders": {
+      "count": {}
+    }
   }
 }

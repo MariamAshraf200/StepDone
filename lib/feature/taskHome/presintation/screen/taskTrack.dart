@@ -4,6 +4,7 @@ import '../../../../../injection_imports.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/taskBloc/state.dart' as taskState;
+import 'add_task_screen.dart';
 
 class TaskTrack extends StatefulWidget {
   const TaskTrack({super.key});
@@ -87,7 +88,16 @@ class _TaskTrackState extends State<TaskTrack> {
         ),
       ),
       // Floating action button that navigates to AddTask screen
-      floatingActionButton: CustomFAB(context: context),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const AddTaskScreen(),
+          ));
+        },
+        tooltip: context.l10n.createNewTask,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        child: const Icon(Icons.add),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }

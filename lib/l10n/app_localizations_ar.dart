@@ -424,5 +424,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appTitle => 'تراك تاسك ';
 
   @override
+  String get moreItems => ' أخرى';
+
+  @override
   String get enableNotification => 'تفعيل الإشعارات';
 }

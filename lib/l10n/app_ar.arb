@@ -195,5 +195,16 @@
   "reminder": "تذكير",
   "@reminder": {
     "description": "Label for Reminder"
+  },
+
+  "addPlanTooltip": "إضافة خطة",
+
+  "done": "منجز",
+  "toDo": "قيد التنفيذ",
+  "moreItems": "+{count} أخرى",
+  "@moreItems": {
+    "placeholders": {
+      "count": {}
+    }
   }
 }

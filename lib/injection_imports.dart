@@ -19,7 +19,6 @@ export 'feature/PlanHome/domain/entities/plan_enums.dart';
 export 'feature/PlanHome/domain/entities/plan_entity.dart';
 export 'feature/PlanHome/domain/entities/taskPlan.dart';
 export 'feature/PlanHome/presentation/screen/updatePlan.dart';
-export 'feature/PlanHome/presentation/widget/plan_details/plan_details_header.dart';
 export 'feature/PlanHome/presentation/widget/plan_details/plan_details_title_description.dart';
 export 'feature/PlanHome/presentation/widget/plan_details/plan_details_progress.dart';
 export 'feature/PlanHome/presentation/widget/plan_details/plan_details_dates.dart';

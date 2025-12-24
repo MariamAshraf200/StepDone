@@ -51,6 +51,7 @@ class _PlanTrackerScreenState extends State<PlanTrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: CustomCard(
         margin: const EdgeInsets.symmetric(vertical: 0.0),
@@ -59,17 +60,8 @@ class _PlanTrackerScreenState extends State<PlanTrackerScreen> {
         borderRadius: BorderRadius.circular(15),
         child: Column(
           children: [
-            // 🔹 Header
-            _PlanHeader(
-              onBack: () => Navigator.of(context).pop(),
-              onAdd: () {
-                navigateToScreenWithSlideTransition(
-                  context,
-                  const AddPlanScreen(),
-                );
-              },
-            ),
-            const SizedBox(height: 12),
+            // header removed
+            const SizedBox(height: 8),
 
             // 🔹 Filters
             PlanFiltersWidget(
@@ -86,47 +78,17 @@ class _PlanTrackerScreenState extends State<PlanTrackerScreen> {
           ],
         ),
       ),
-    );
-  }
-}
 
-// ---------------- Header ----------------
-class _PlanHeader extends StatelessWidget {
-  final VoidCallback onBack;
-  final VoidCallback onAdd;
-
-  const _PlanHeader({required this.onBack, required this.onAdd});
-
-  Widget _circleIconButton({
-    required IconData icon,
-    required VoidCallback onPressed,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.grey.shade400, width: 1.5),
-      ),
-      child: IconButton(
-        icon: Icon(icon, size: 22,),
-        onPressed: onPressed,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            l10n.myPlans,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          _circleIconButton(icon: Icons.add, onPressed: onAdd),
-        ],
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'plan_tracker_add_fab',
+        onPressed: () {
+          navigateToScreenWithSlideTransition(
+            context,
+            const AddPlanScreen(),
+          );
+        },
+        tooltip: l10n.addPlan,
+        child: const Icon(Icons.add),
       ),
     );
   }

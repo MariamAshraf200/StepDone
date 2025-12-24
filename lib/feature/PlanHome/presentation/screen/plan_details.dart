@@ -69,12 +69,6 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            PlanDetailsHeader(
-              onBack: () {
-                Navigator.pop(context); // ❌ بدون true — مش محتاج
-              },
-              onMore: () {},
-            ),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(20),
