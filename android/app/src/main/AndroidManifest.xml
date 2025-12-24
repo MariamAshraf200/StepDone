@@ -8,6 +8,8 @@
     <!-- Optional: permission to show full-screen intent notifications if your app uses them -->
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Android 13+ runtime permission for posting notifications -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
             android:label="StepDone"

@@ -17,6 +17,14 @@ This project is licensed under the MIT License © 2025  [Mariam Ashraf](https://
   * Automatically track progress of plans based on tasks’ completion.  
   * Store plans locally using **Hive** for persistence.  
 
+* **Authentication (Google)**
+  * Sign in with Google: users can authenticate using their Google account to unlock personalized experiences.  
+  * Account management: sign out and switch accounts. (If you enable backend sync, authentication can be used to associate local plans/tasks with a user account.)
+
+* **Notification Feature**
+  * Local reminders: schedule local notifications to remind users about tasks or plans at a specific date/time.
+  * Recurring reminders & quick actions: support for repeating reminders, and actionable notifications (open app, snooze) where platform supports it.
+
 ---
 
 # The main Technologies & Packages/Plugins used in the App  
@@ -27,6 +35,24 @@ This project is licensed under the MIT License © 2025  [Mariam Ashraf](https://
 * **Other Plugins:**  
   * [uuid](https://pub.dev/packages/uuid) – for unique IDs.  
   * [intl](https://pub.dev/packages/intl) – for date formatting.  
+  * [google_sign_in](https://pub.dev/packages/google_sign_in) – Google Sign-In integration for authentication.  
+  * [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications) – Local notifications for scheduling and displaying reminders.  
+  * [flutter_timezone](https://pub.dev/packages/flutter_timezone) – Timezone handling for scheduled notifications (recommended).  
+
+---
+
+# Authentication — Quick setup notes (Google Sign-In)
+
+- Add `google_sign_in` to `pubspec.yaml` and follow the plugin docs for platform setup (Android: OAuth client / SHA-1; iOS: URL schemes).
+- Use the app's `AuthBloc`/use-cases for sign-in/sign-out; provide a clear UI button and handle sign-out cleanup.
+
+---
+
+# Notifications — Quick setup notes (Local notifications)
+
+- Uses `flutter_local_notifications` + `flutter_timezone` (and `tz`) for timezone-aware local scheduling.
+- Add the packages to `pubspec.yaml`, call `LocalNotificationService.init()` in `main.dart`, and request runtime permission on Android 13+/iOS before posting notifications.
+- Use helpers like `LocalNotificationService.scheduleOneTime(...)` and `scheduleRepeat(...)` to schedule reminders.
 
 ---
 
@@ -36,7 +62,6 @@ This project is licensed under the MIT License © 2025  [Mariam Ashraf](https://
 * Applying `Clean Architecture` layered design.  
 
 📌 Example Clean Architecture model used:  
-![image](assets/images/flutter_clean_arch.png)  
 
 ## Directory Structure  
 
@@ -62,7 +87,8 @@ lib
 │       ├──time_format_util.dart
 │       └──widgets/
 │
-└──feature
+└──features
+    ├──Authentication/
     ├──Home/
     ├──PlanHome/
     └──taskHome/
