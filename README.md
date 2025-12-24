@@ -24,8 +24,7 @@ This project is licensed under the MIT License © 2025  [Mariam Ashraf](https://
 * **Notification Feature**
   * Local reminders: schedule local notifications to remind users about tasks or plans at a specific date/time.
   * Recurring reminders & quick actions: support for repeating reminders, and actionable notifications (open app, snooze) where platform supports it.
-
----
+  * 
 
 # The main Technologies & Packages/Plugins used in the App  
 * **State Management:** Using [flutter_bloc](https://pub.dev/packages/flutter_bloc).  
@@ -90,7 +89,36 @@ lib
 └──features
     ├──Authentication/
     ├──Home/
-    ├──PlanHome/
-    └──taskHome/
-        
+    ├──Task/
+    ├──Plan/
+    └──Notification/        
 ```
+
+---
+
+# Features Preview 
+
+<table>
+  <tr>
+    <td style="text-align:center;">
+      <strong>Home</strong><br>
+      <img src="https://github.com/user-attachments/assets/7bcb8090-1bcb-45c4-917d-67302f4648ef" alt="Home" style="width:180px; height:120px; object-fit:cover;" />
+    </td>
+    <td style="text-align:center;">
+      <strong>Task</strong><br>
+      <img src="https://github.com/user-attachments/assets/c75b456d-ce43-46e8-8eeb-3e1049216de1"
+ alt="Task" style="width:180px; height:120px; object-fit:cover;" />
+    </td>
+    <td style="text-align:center;">
+      <strong>Plan</strong><br>
+      <img src="https://github.com/user-attachments/assets/648a66da-ff62-4d2e-ad14-822bcfea633e"  alt="Plan" style="width:180px; height:120px; object-fit:cover;" />
+    </td>
+    <td style="text-align:center;">
+      <strong>Notification</strong><br>
+      <img src="https://github.com/user-attachments/assets/cca91c9b-f747-477e-9332-112fd25d09b4" alt="Notification" style="width:180px; height:120px; object-fit:cover;" />
+    </td>
+  </tr>
+</table>
+
+---
+
