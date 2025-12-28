@@ -102,20 +102,19 @@ lib
   <tr>
     <td style="text-align:center;">
       <strong>Home</strong><br>
-      <img src="https://github.com/user-attachments/assets/7bcb8090-1bcb-45c4-917d-67302f4648ef" alt="Home" style="width:180px; height:120px; object-fit:cover;" />
+      <img width="180" height="120" alt="Image" src="https://github.com/user-attachments/assets/b87cc8ad-f744-4a86-a8cb-a016e473cb1f" />
     </td>
     <td style="text-align:center;">
       <strong>Task</strong><br>
-      <img src="https://github.com/user-attachments/assets/c75b456d-ce43-46e8-8eeb-3e1049216de1"
- alt="Task" style="width:180px; height:120px; object-fit:cover;" />
+      <img width="180" height="120" alt="Image" src="https://github.com/user-attachments/assets/1effe367-770b-484f-b321-06cae8144fd3" /> 
     </td>
     <td style="text-align:center;">
       <strong>Plan</strong><br>
-      <img src="https://github.com/user-attachments/assets/648a66da-ff62-4d2e-ad14-822bcfea633e"  alt="Plan" style="width:180px; height:120px; object-fit:cover;" />
+      <img width="180" height="120" alt="Image" src="https://github.com/user-attachments/assets/c16afaf6-6d3a-4542-9dce-eecf29c4c49e" />
     </td>
     <td style="text-align:center;">
       <strong>Notification</strong><br>
-      <img src="https://github.com/user-attachments/assets/cca91c9b-f747-477e-9332-112fd25d09b4" alt="Notification" style="width:180px; height:120px; object-fit:cover;" />
+      <img width="180" height="120" alt="Image" src="https://github.com/user-attachments/assets/74374903-daf1-4ccc-a2ea-65c795809ead" />
     </td>
   </tr>
 </table>
